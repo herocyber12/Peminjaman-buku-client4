@@ -8,28 +8,34 @@ use App\Models\Review;
 use App\Models\Reservasi;
 use App\Models\Profil;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class LandingController extends Controller
 {
     public function index()
     {
-        $data_buku = Buku::join('kategori','buku.id_kategori','=','kategori.id_kategori')
-    ->select('buku.*','kategori.kategori')->get();
+        $data_buku = Buku::get();
+        $ulasanPerBuku = [];
 
-    $ulasanPerBuku = [];
+        foreach ($data_buku as $buku) {
+            $jumlahUlasan = Review::where('id_buku', $buku->id_buku)->count();
+            $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
+        }
 
-    foreach ($data_buku as $buku) {
-        $jumlahUlasan = Review::where('id_buku', $buku->id_buku)->count();
-        $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
-    }
-
-    return view('pages.index',['data'=>$data_buku, 'ulasanPerBuku' => $ulasanPerBuku]);
+        return view('pages.index',['data'=>$data_buku, 'ulasanPerBuku' => $ulasanPerBuku]);
     }
 
     public function details($id_buku)
     {
-        $data_buku = Buku::join('kategori','buku.id_kategori','=','kategori.id_kategori')->where('id_buku',$id_buku)->select('buku.*','kategori.kategori')->get();
-        $recomendation = Buku::join('kategori','buku.id_kategori','=','kategori.id_kategori')->inRandomOrder()->select('buku.*','kategori.kategori')->get();
+        $buku = Buku::where('id_buku',$id_buku)->first();
+        $data_buku = Buku::where('id_buku',$id_buku)->get();
+        $c = $buku->totalpeminjaman + 1;
+        $update = [
+            'totalpeminjaman' => $c,
+        ];
+
+        Buku::where('id_buku',$id_buku)->update($update);
+        $recomendation = Buku::inRandomOrder()->get();
         $review = Review::where('id_buku',$id_buku)->get();
         $profil = Profil::all();
 
@@ -57,21 +63,18 @@ class LandingController extends Controller
     public function pinjam(Request $request)
     {
         $id = $request->id_buku;
-        $buku = Buku::where('id_buku',$id);
-        $tgl_dipinjam = Carbon::now();
-        $tgl_dikembalikan = $tgl_dipinjam->addDay(3);
+        $b = Buku::where('id_buku',$id);
         $i = mt_rand(0000,9999);
         $idr = "ID-R".$i;
 
         $data = [
             'id_reservasi' => $idr,
-            'tanggal_dipinjam' => $tgl_dipinjam,
-            'tanggal_dikembalikan' => $tgl_dikembalikan,
             'status_reservasi' => 'Pengajuan Peminjaman',
             'status_peminjaman' => 'Belum Disetujui',
-            'id_profil' => 'ID-P45654',
+            'id_profil' => auth()->user()->id_profil,
             'id_buku' => $id
         ];
+        
         $reservasi = Reservasi::create($data);
 
         if($reservasi){
@@ -79,7 +82,17 @@ class LandingController extends Controller
         $status_buku = [
             'status_buku' => 'Dipinjam'
         ];
-        $buku = $buku->update($status_buku);
+        $buku = $b->update($status_buku);
+        $no_hp = Profil::where('id_profil',auth()->user()->id_profil)->first();
+        $namabuku = $b->first();
+
+        Http::withHeaders([
+            'Authorization'=> 'j@LzeHaXb4bhIctMhNqu', // API KODE disini
+        ])->post('https://api.fonnte.com/send',[
+            'target' =>'081542355622', 
+            'message' => 'Atas Nama '. $no_hp->nama.' melakukan peminjaman buku yang berjudul "'. $namabuku->nama_buku .'" silahkan konfirmasi permintaan halaman admin' ,
+            'countryCode' => '+62',
+        ]);
 
             return back();
         }

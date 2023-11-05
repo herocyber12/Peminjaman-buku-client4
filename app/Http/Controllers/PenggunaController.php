@@ -27,35 +27,8 @@ class PenggunaController extends Controller
                 'no_hp' => 'required|numeric',
             ]);
             $data = Profil::where('id_profil',$id)->first();
-            if(Storage::disk('public')->exists($data->foto)){
-                $oldFoto = Storage::disk('public')->delete($data->foto);
-                if($oldFoto){
-                    $path = $request->file('image')->store('/img/foto','public');
-                    $data = [
-                        'foto' => $path,
-                        'nama' => $request->nama,
-                        'alamat' => $request->alamat,
-                        'no_hp'=> $request->no_hp,
-                    ];
-
-                    $result = Profil::where('id_profil',$id)->update($data);
-
-                    if($result){
-                        $act = "success";
-                        $message = "Berhasil Update Data";
-                        $header = "Berhasil";
-                    } else {
-                        $act = "error";
-                        $message = "Gagal Update Data";
-                        $header = "Gagal";
-                    }
-
-                } else {
-                    $act = "error";
-                    $message = "Terjadi Kegagalan";
-                    $header = "Gagal";
-                }
-            } else {
+            if(is_null($data->foto)){
+                $path = $request->file('image')->store('/img/foto','public');
                 $path = $request->file('image')->store('/img/foto','public');
 
                 $data = [
@@ -75,6 +48,57 @@ class PenggunaController extends Controller
                     $act = "error";
                     $message = "Gagal Update Data";
                     $header = "Gagal";
+                }
+            } else {
+                if(Storage::disk('public')->exists($data->foto)){
+                    $oldFoto = Storage::disk('public')->delete($data->foto);
+                    if($oldFoto){
+                        $path = $request->file('image')->store('/img/foto','public');
+                        $data = [
+                            'foto' => $path,
+                            'nama' => $request->nama,
+                            'alamat' => $request->alamat,
+                            'no_hp'=> $request->no_hp,
+                        ];
+    
+                        $result = Profil::where('id_profil',$id)->update($data);
+    
+                        if($result){
+                            $act = "success";
+                            $message = "Berhasil Update Data";
+                            $header = "Berhasil";
+                        } else {
+                            $act = "error";
+                            $message = "Gagal Update Data";
+                            $header = "Gagal";
+                        }
+    
+                    } else {
+                        $act = "error";
+                        $message = "Terjadi Kegagalan";
+                        $header = "Gagal";
+                    }
+                } else {
+                    $path = $request->file('image')->store('/img/foto','public');
+    
+                    $data = [
+                        'foto' => $path,
+                        'nama' => $request->nama,
+                        'alamat' => $request->alamat,
+                        'no_hp'=> $request->no_hp,
+                    ];
+    
+                    $result = Profil::where('id_profil',$id)->update($data);
+    
+                    if($result){
+                        $act = "success";
+                        $message = "Berhasil Update Data";
+                        $header = "Berhasil";
+                    } else {
+                        $act = "error";
+                        $message = "Gagal Update Data";
+                        $header = "Gagal";
+                    }
                 }
             }
         } else {
@@ -106,9 +130,9 @@ class PenggunaController extends Controller
         }
 
         return response()->json([
-            'icon' => $act,
+            'icon' => $header,
             'text' => $message,
-            'header'=> $header
+            'header'=> $act
         ]);
 
     }

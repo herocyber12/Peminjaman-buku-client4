@@ -28,7 +28,7 @@
                                 </div>
                                 <span>1.029 Votes (Optional)</span>
                             </div> -->
-                            <p>{{$a->sinopsis}}</p>
+                            <?php echo $a->sinopsis ?>
                             <div class="anime__details__widget">
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
@@ -74,6 +74,11 @@
                             <div class="section-title">
                                 <h5>Reviews</h5>
                             </div>
+                            @if(empty($review))
+                            <div class="anime__review__item">
+                                <center><h2>Belum ada komentar</h2></center>
+                            </div>
+                            @else
                             @foreach($review as $r)
                                 @foreach($profil as $p)
                                     @if($r->id_profil === $p->id_profil)
@@ -89,6 +94,8 @@
                                     @endif
                                 @endforeach
                             @endforeach
+                            @endif
+                           
                         </div>
                         
                         <div class="anime__details__form">

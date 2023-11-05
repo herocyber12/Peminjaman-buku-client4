@@ -64,14 +64,15 @@
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
                                         <div class="ep">18 / 18</div>
                                         <div class="st bg-success">{{$a->status_buku}}</div>
-                                        <div class="comment"><i class="fa fa-comments"></i>{{ $ulasanPerBuku[$a->id_buku]}}</div>
+                                        <div class="comment"><i class="fa fa-comments"></i> {{
+                                             $ulasanPerBuku[$a->id_buku]}}</div>
                                         <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                     </div>
                                     <div class="product__item__text">
                                         <ul>
-                                            <li>{{$a->kategori}}</li>
+                                            <li>{{$a->id_kategori}}</li>
                                         </ul>
-                                        <h5><a href="#">{{$a->nama_buku}}</a></h5>
+                                        <h5><a href="{{url('detail-buku', $a->id_buku   )}}">{{$a->nama_buku}}</a></h5>
                                     </div>
                                 </div>
                             </div>
@@ -105,7 +106,7 @@
                                     </div>
                                     <div class="product__item__text">
                                         <ul>
-                                            <li>{{$a->kategori}}</li>
+                                            <li>{{$a->id_kategori}}</li>
                                         </ul>
                                         <h5><a href="{{url('detail-buku', $a->id_buku   )}}">{{$a->nama_buku}}</a></h5>
                                     </div>

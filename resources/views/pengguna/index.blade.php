@@ -44,7 +44,7 @@
                     @foreach($pengguna as $a)
 				          <tr>
                     <td class="align-middle">{{$a->id_profil}}</td>
-					          <td class="align-middle"><img src="{{asset('storage/'.$a->foto)}}" class="img-fluid" alt="" width="100"></td>
+					          <td class="align-middle"><img src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/review-0.jpg')}}" class="img-fluid" alt="" width="100"></td>
 					          <td class="align-middle">{{$a->nama}}</td>
 					          <td class="align-middle">{{$a->alamat}}</td>
 					          <td class="align-middle">{{$a->no_hp}}</td>
@@ -73,7 +73,7 @@
 			                          <div class="image-container">
 	                                <label for="gambarInput" class="btn btn-secondary btn-choose ml-auto"><i class="fa fa-file-image"></i> Pilih Cover</label>
 	                                <input type="file" id="gambarInput" accept="image/*" value="{{$a->cover}}">
-	                                <img id="gambarPreview" src="{{asset('storage/'.$a->cover)}}" alt="" style="max-width: 100%; max-height: 100%; border-radius: 5px;">
+	                                <img id="gambarPreview" src="{{asset('storage/'.$a->foto)}}" alt="" style="max-width: 100%; max-height: 100%; border-radius: 5px;">
 	                              </div>
                               </form>
 			                      </div>

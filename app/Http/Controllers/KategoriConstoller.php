@@ -11,9 +11,31 @@ class KategoriConstoller extends Controller
     {
         $a = mt_rand(0000,9999);
         $idk = "ID-K".$a;
+        $kategori = ucfirst(strtolower($request->kategori));
+        $dataset = Kategori::get();
+
+        foreach($dataset as $v){
+            if($kategori === $v->kategori){
+                $header = "Gagal";
+                $text = "Kategori Sudah ada";
+                $icon = "error"; 
+
+                $data = Kategori::all();
+                
+                return response()->json([
+                    'data' => $data,
+                    'icon' => $icon,
+                    'text' => $text,
+                    'header'=> $header
+                ]);
+
+                break;
+            }
+        }
+
         $data = [
             'id_kategori' => $idk,
-            'kategori' => $request->kategori
+            'kategori' => $kategori,
         ];
 
         $result = Kategori::create($data);
@@ -39,6 +61,6 @@ class KategoriConstoller extends Controller
     public function hapus($id)
     {
         Kategori::where('id_kategori',$id)->delete();
-        return redirect()->route('buku');
+        return back();
     }
 }

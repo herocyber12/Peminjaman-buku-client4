@@ -2,53 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profil;
+use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;;
-use Illuminate\Validation\ValidationException;
-use App\Models\Profil;
-use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
-class AuthController extends Controller
+class GuestController extends Controller
 {
-    public function login()
+    public function ceklogin(Request $request)
     {
-        return view('auth/login');
-    }
-
-    public function cek(Request $request)
-    {
-        Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'username' => 'required',
-            'password' => 'required',
-        ])->validate();
-        $credential = $request->only('username', 'password');
+            'passowrd' => 'req'
+        ]);
 
-        if (!Auth::attempt($credential)) {
+        $credential = $request->only('username','password');
 
-            // Jika login gagal
-            return back()->withErrors(['username' => 'Login gagal.']);
-        }
-        
-        
-        $user = Auth::user();
-        $profilData = User::join('profil', 'users.id_profil', '=', 'profil.id_profil')
-        ->where('users.id_profil', $user->id_profil)
-        ->first();
-
-        if ($profilData) {
-            session(['profil' => $profilData]);
+        if(Auth::attempt($credential)){
+            return back();
         }
 
         $request->session()->regenerate();
 
-        return redirect()->route('home');
-    }
-
-    public function register()
-    {
-        return view('auth/register');
+        return redirect()->route('daftar');
     }
 
     public function create(Request $request)
@@ -85,7 +64,7 @@ class AuthController extends Controller
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
-            'status' => 'Admin',
+            'status' => 'Member',
         ];
 
         $sql = Profil::create($profil);
@@ -101,6 +80,15 @@ class AuthController extends Controller
             $sql = User::create($users);
             if($sql){
                 echo "<script>alert('Berhasil')</script>";
+
+                $response = Http::withHeaders([
+                    'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                ])->post('https://api.fonnte.com/send',[
+                    'target' => '081542355622',
+                    'message' => 'Atas Nama '.$request->nama.' Mendaftarkan Diri Ke Member Perpustakaan Widya Kusuma',
+                    'countryCode' => '+62',
+                ]);
+
             } else {
                 echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
             }
@@ -108,7 +96,7 @@ class AuthController extends Controller
             echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
         }
         
-        return redirect()->to('login');
+        return redirect()->to('guest/login');
     }
 
     public function logout(Request $request)
@@ -116,6 +104,6 @@ class AuthController extends Controller
         Auth::guard('web')->logout();
         $request->session()->invalidate();
 
-        return redirect()->route('login');
+        return redirect()->route('daftar');
     }
 }

@@ -40,6 +40,12 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Masuk</h1>
                                     </div>
+                                    @error('username')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
+
                                     <form class="user" method="post" action="{{route('cek')}}">
                                         @csrf
                                         <div class="form-group">

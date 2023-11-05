@@ -1,14 +1,14 @@
 <header class="header">
         <div class="container">
             <div class="row">
-                <div class="col-lg-2">
+                <div class="col-lg-2 m-0 p-0 py-3 m-0 p-0">
                     <div class="header__logo">
                         <a href="./index.html">
                             <img src="{{asset('img/logo.png')}}" alt="">
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-8">
+                <div class="col-lg-8 m-0 p-0 py-3 m-0 p-0">
                     <div class="header__nav">
                         <nav class="header__menu mobile-menu">
                             <ul>
@@ -29,10 +29,16 @@
                         </nav>
                     </div>
                 </div>
-                <div class="col-lg-2">
-                    <div class="header__right">
-                        <a href="#" class="search-switch"><span class="icon_search"></span></a>
-                        <a href="./login.html"><span class="icon_profile"></span></a>
+                <div class="col-lg-2 m-0 p-0 py-3">
+                    <div class="header__right d-flex">
+                        <a href="#" class="search-switch btn-sm m-0 p-0 mr-3"><span class="icon_search"></span></a>
+                        @if(auth()->user())
+                            <a href="./login.html" class="btn btn-outline-warning btn-sm m-0 p-0 mr-3">Member</a>
+                            <a href="{{url('guest/logout')}}" class="btn btn-danger btn-sm m-0 p-0">Logout</a>
+                        @else
+                            <a href="{{url('guest/login')}}" class="btn btn-success btn-sm m-0">Login</a>
+                        @endif
+                        <!-- <a href="./login.html"><span class="icon_profile"></span></a> -->
                     </div>
                 </div>
             </div>

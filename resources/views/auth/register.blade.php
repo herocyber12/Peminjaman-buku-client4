@@ -23,7 +23,6 @@
 </head>
 
 <body class="bg-gradient-primary">
-
     <div class="container">
 	<div class="col-xl-7 col-md-8 ml-auto mr-auto">
 		
@@ -36,7 +35,17 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Buat Akun</h1>
                             </div>
-                            <form action="{{route('auth.create')}}" method="POST" class="user">
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            <li>{{ $error }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
+                            <form action="{{route('create')}}" method="POST" class="user">
                                 @csrf
                                 <div class="form-group">
                                     <input type="text" name="nama" class="form-control form-control-user" id=""
@@ -51,13 +60,16 @@
                                         placeholder="Nomor Wa AKtif">
                                 </div>
                                 <div class="form-group">
+                                    <input type="email" name="email" class="form-control form-control-user" id=""
+                                        placeholder="E-mail anda">
+                                </div>
+                                <div class="form-group">
                                     <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Username">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-12 mb-3 mb-sm-0">
-                                        <input type="password" name="passowrd" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Masukan Kata Sandi">
+                                        <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Masukan Kata Sandi">
                                     </div>
                                 </div>
                                 <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
@@ -69,7 +81,7 @@
                                 <a class="small" href="forgot-password.html">Lupa Kata Sandi?</a>
                             </div>
                             <div class="text-center">
-                                <a class="small" href="{{route('auth.login')}}">Sudah Punya? Masuk!</a>
+                                <a class="small" href="{{route('login')}}">Sudah Punya? Masuk!</a>
                             </div>
                         </div>
                     </div>
@@ -89,6 +101,13 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{asset('js/dashboard/sb-admin-2.min.js')}}"></script>
+    <script>
+$(document).ready(function () {
+  $('#a').toast('show');
+});
+
+
+    </script>
 
 </body>
 

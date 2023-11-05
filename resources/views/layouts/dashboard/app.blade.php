@@ -106,20 +106,22 @@
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog dialog-modal-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Keluar ?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Yain Keluar ?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body">                    
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <form action="{{route('logout')}}" method="post">
-                        @csrf
-                        <button type="submit" class="btn btn-danger" value="logout"><i class="fa fa-logout"></i>Logout</button>
-                    </form>
+                <div class="modal-body">
+                    <div class="d-flex">                   
+                        <button class="btn btn-secondary mr-3" type="button" data-dismiss="modal">Cancel</button>
+                        <form action="{{route('logout')}}" method="post">
+                            @csrf
+                            <button type="submit" class="btn btn-danger" value="logout"><i class="fa fa-logout"></i>Logout</button>
+                        </form>
+                    </div> 
                 </div>
             </div>
         </div>
@@ -266,7 +268,6 @@
                             icon: icon,
                         }).then((result)=> {
                             if (result) {
-                                // Ini akan dijalankan setelah pengguna mengklik tombol OK
                                 location.reload();
                             }
                         });
@@ -283,7 +284,6 @@
                 var id_profil = $('#id_profil').val();
                 var fileupload = $('#gambarInput')[0].files;
                 // var sinopsis = CKEditor.instances.editor.getData();
-                
                 var formData = new FormData();
                     formData.append('image', fileupload[0]);
                     formData.append('id_profil', id_profil);
@@ -302,9 +302,9 @@
                     contentType: false,
                     processData: false,
                     success: function(e) {
-                        var title = e.header;
-                        var text = e.message;
-                        var icon = e.act;
+                        var title = e.act;
+                        var text = e.text;
+                        var icon = e.header;
                         Swal.fire({
                             title: title,
                             text: text,
@@ -326,14 +326,17 @@
             });
 
             $('#buatKategori').on('click',function(){
+                var data = {
+                        _token: "{{ csrf_token() }}",
+                        kategori: $('#input_kategori').val(),
+                    }
                 $.ajax({
                     url: urlKategoriSimpan,
                     method :"POST",
-                    data:{
-                        _token: "{{ csrf_token() }}",
-                        kategori: $('#input_kategori').val(),
-                    },
+                    data:data,
                     success: function(e){
+                        urlHapusKat = "{{route('kategori.hapus',['id' => ':id'])}}";
+
                         Swal.fire(
                             e.header,
                             e.text,
@@ -341,9 +344,16 @@
                         )
                         var html = "";
                         for(i=0; i<e.data.length;i++){
+                            var urlFinal = url.replace('id',e.data[i].id_kategori);
                             html += '<tr>'+
                                         '<td>'+i+ '</td>'+
                                         '<td>'+e.data[i].kategori+'</td>'+
+                                        '<td>'+ 
+                                            '<div class="d-flex">' +
+                                              '<a href= "' + urlFinal+'"class="btn btn-danger btn-sm m-2"><i class="fa fa-trash"></i> Hapus</a>' + 
+                                            '</div>'+
+                                        '</td>'+
+
                                     '</tr>';
                         }
 
@@ -378,6 +388,27 @@
                         });
                     }
                 })
+            });
+
+            var isEditable = false; // Mode awal non-edit
+
+            // Event handler untuk tombol "Edit"
+            $('#editButton').click(function() {
+                if (isEditable) {
+                    // Jika sedang dalam mode edit, maka kembalikan semua input menjadi readonly
+                    $('.form-control').prop('readonly', true);
+                    isEditable = false;
+                    // Ubah teks tombol menjadi "Edit"
+                    $(this).text('Selesai');
+                    $(this).val('Kirim'); // Ubah nilai tombol menjadi "Kirim"
+                } else {
+                    // Jika sedang dalam mode non-edit, maka hapus readonly dari semua input
+                    $('.form-control').prop('readonly', false);
+                    isEditable = true;
+                    // Ubah teks tombol menjadi "Selesai"
+                    $(this).text('Edit');
+                    $(this).val('Edit'); // Kembalikan nilai tombol menjadi "Edit"
+                }
             });
         });
     </script>

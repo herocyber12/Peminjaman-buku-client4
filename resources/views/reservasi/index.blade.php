@@ -55,8 +55,8 @@
 							<td class="align-middle">{{$a->id_reservasi}}</td>
 							<td class="align-middle">{{$a->nama_profil}}</td>
 							<td class="align-middle">{{$a->nama_buku}}</td>
-							<td class="align-middle">{{$a->tanggal_dipinjam}}</td>
-							<td class="align-middle">{{$a->tanggal_dikembalikan}}</td>
+							<td class="align-middle">{{isset($a->tanggal_dipinjam) ? $a->tanggal_dipinjam: "-"}}</td>
+							<td class="align-middle">{{isset($a->tanggal_dikembalikan)?$a->tanggal_dikembalikan:"-" }}</td>
 							<td class="align-middle"><span class="bg-{{$bg}} text-white p-2" style="border-radius: 7px; ">{{$a->status_reservasi}}</span></td>
 							<td class="align-middle">
                                 <input type="hidden" id="id_reservasi" value="{{$a->id_reservasi}}">

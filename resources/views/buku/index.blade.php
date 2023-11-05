@@ -18,12 +18,12 @@
       <div class="modal-header">
         <div class="modal-title" id="daftarKategorilabel">
           <h5>Daftar Kategori</h5>
-          <button type="button" class="btn btn-primary btn-sm mt-2" data-toggle="modal" data-target="#buatKategori">
+          <button type="button" class="btn btn-primary btn-sm mt-2" data-toggle="modal" data-target="#buatKategoriA">
              Buat Kategori Baru
           </button>
 
           <!-- Modal -->
-          <div class="modal fade" id="buatKategori" tabindex="-1" role="dialog" aria-labelledby="buatKategoriLabel" aria-hidden="true">
+          <div class="modal fade" id="buatKategoriA" tabindex="-1" role="dialog" aria-labelledby="buatKategoriLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content modal-sm modal-dialog-centered">
                 <div class="modal-header">
@@ -36,7 +36,7 @@
                   <form>
                     @csrf
                     <label for="input_kategori">Masukan Kategori</label>
-                    <input type="text" name="input_kategori" id="input_kategori" class="form-control form-control-sm mb-3">
+                    <input type="text" name="input_kategori" id="input_kategori" class="form-control form-control-sm mb-3" required>
                     <button type="button" class="btn btn-success btn-md col-md-12" id="buatKategori">Buat</button>
                   </form>
                 </div>
@@ -176,7 +176,7 @@
 									                  		<td class="align-middle">{{$a->penerbit}}</td>
 									                  		<td class="align-middle">{{$a->penulis}}</td>
 									                  		<td class="align-middle">{{$a->tahun_terbit}}</td>
-									                  		<td class="align-middle">{{$a->kategori}}</td>
+									                  		<td class="align-middle">{{$a->id_kategori}}</td>
 									                  		<td class="align-middle">{!! QrCode::size(100)->generate(route('login')) !!}</td>
 									                  		<td class="align-middle">
 									                  			<button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</button>
@@ -212,7 +212,7 @@
 								                                  	  <div class="mt-3">
 								                                  	<form >
                                                       @csrf  
-                                                      <input type="hidden" id="id_buku" value="{{$a->id_buku}}">;
+                                                      <input type="hidden" id="id_buku" value="{{$a->id_buku}}">
 								                                  		<input type="text" id="nama_bukuEdit" class="form-control mb-3" value="{{$a->nama_buku}}" placeholder="Masukan Nama Buku">  
 								                                  		<input type="text" id="penerbitEdit" class="form-control mb-3" value="{{$a->penerbit}}" placeholder="Penerbit">  
 								                                  		<input type="text" id="penulisEdit" class="form-control mb-3" value="{{$a->penulis}}" placeholder="Penulis">  
@@ -220,7 +220,7 @@
                                                       <select class="form-control mb-3" id="kategoriEdit">
                                                         <option>Pilih Kategori</option>
                                                         @foreach($kategori as $b)
-                                                          <option value="{{ $a->kategori}}">{{$b->kategori}}</option>
+                                                          <option value="{{ $b->kategori}}">{{$b->kategori}}</option>
                                                         @endforeach
                                                       </select> 
                                                       <textarea id="editorEdit" class="editorEdit" name="sinopsis" style="height: 100px">{{$a->sinopsis}}</textarea>

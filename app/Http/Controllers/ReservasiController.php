@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buku;
+use App\Models\Profil;
 use Illuminate\Http\Request;
 use App\Models\Reservasi;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 class ReservasiController extends Controller
 {
@@ -18,6 +22,7 @@ class ReservasiController extends Controller
     public function update(Request $request)
     {
         $elosql=  Reservasi::where('id_reservasi',$request->id);
+        $c = $elosql->first(); // mengambil data dari database
         if($request->tombol === "hapus"){
             $result = $elosql->delete();
             if($result){
@@ -33,6 +38,8 @@ class ReservasiController extends Controller
             if($request->tombol === "setuju"){
                 $status_peminjaman = "Disetujui";
                 $status_reservasi = "Masih Dipinjam";
+                $tgl_dipinjam = Carbon::now();
+                $tgl_dikembalikan = $tgl_dipinjam->copy()->addDay(3);
             } else if($request->tombol === "tolak"){
                 $status_peminjaman = "Tidak Di Setujui";
                 $status_reservasi = "Pengajuan Peminjaman";
@@ -42,6 +49,8 @@ class ReservasiController extends Controller
             }
 
             $update = [
+                'tanggal_dipinjam' => $tgl_dipinjam,
+                'tanggal_dikembalikan' => $tgl_dikembalikan,
                 'status_reservasi' => $status_reservasi,
                 'status_peminjaman' => $status_peminjaman
             ];
@@ -52,6 +61,18 @@ class ReservasiController extends Controller
                 $icon = "success";
                 $message = "Berhasil Update Data";
                 $title = "Berhasil";
+                $no_hp = Profil::where('id_profil',$c->id_profil)->first();
+                $no_hp = strval($no_hp->no_hp);
+                $namabuku = Buku::where('id_buku',$c->id_buku)->first();
+                $response = Http::withHeaders([
+                    'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                ])->post('https://api.fonnte.com/send',[
+                    'target' =>'0'.$no_hp,
+                    'message' => 'Pengajuan Peminjaman anda untuk buku berjudul '.$namabuku->nama_buku.' telah disetujui silahkan ambil buku di Perpustakaan Widya Kusuma.',
+                    'countryCode' => '+62',
+                ]);
+
+                $result = $response->json();
             } else {
                 $icon = "error";
                 $message = "Gagal Update Data";
@@ -59,6 +80,7 @@ class ReservasiController extends Controller
             }
         }
         return response()->json([
+            'result' => $result,
             'header' => $title,
             'text' => $message,
             'icon' => $icon

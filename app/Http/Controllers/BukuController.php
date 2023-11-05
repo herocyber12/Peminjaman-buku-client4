@@ -13,7 +13,8 @@ class BukuController extends Controller
     public function index()
     {
         $kategori = Kategori::all();
-        $data_buku = Buku::join('kategori','buku.id_kategori','=','kategori.id_kategori')->select('buku.*','kategori.kategori')->get();
+        $data_buku = Buku::get();
+        // dd($data_buku);
         return view('buku.index',[
             'data_buku' => $data_buku,
             'kategori' => $kategori,
@@ -52,6 +53,7 @@ class BukuController extends Controller
             'penerbit' => $request->penerbit,
             'penulis' => $request->penulis,
             'tahun_terbit' => $request->tahun_terbit,
+            'status_buku' => 'Tersedia',
             'id_kategori' => $request->kategori,
             'totalpeminjaman' => 0
         ];
