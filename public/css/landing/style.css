@@ -172,6 +172,14 @@ ol {
 	color: #fff;
 	letter-spacing: 2px;
 }
+.poc-btn {
+	display: inline-block;
+	font-size: 13px;
+	font-weight: 700;
+	text-transform: uppercase;
+	color: #00A9FF;
+	letter-spacing: 2px;
+}
 
 .primary-btn span {
 	font-size: 18px;
@@ -420,14 +428,14 @@ ol {
 
 .header__right {
 	text-align: right;
-	padding: 20px 0 15px;
+	padding: 15px 0 0px;
 }
 
 .header__right a {
 	display: inline-block;
 	font-size: 18px;
 	color: #fff;
-	margin-right: 30px;
+	margin-right: 5px;
 }
 
 .header__right a:last-child {
@@ -2097,8 +2105,8 @@ ol {
 	}
 	.header__right {
 		position: absolute;
-		right: 120px;
-		top: -42px;
+		right: 100px;
+		top: -52px;
 		padding: 0;
 	}
 	.header__menu {
@@ -2202,8 +2210,8 @@ ol {
 	}
 	.header__right {
 		position: absolute;
-		right: 120px;
-		top: -42px;
+		right: 100px;
+		top: -52px;
 		padding: 0;
 	}
 	.header__menu {

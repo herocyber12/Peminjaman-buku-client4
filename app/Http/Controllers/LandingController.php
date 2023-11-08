@@ -7,6 +7,7 @@ use App\Models\Buku;
 use App\Models\Review;
 use App\Models\Reservasi;
 use App\Models\Profil;
+use App\Models\Kategori;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
@@ -14,7 +15,7 @@ class LandingController extends Controller
 {
     public function index()
     {
-        $data_buku = Buku::get();
+        $data_buku = Buku::latest()->take(8)->get();
         $ulasanPerBuku = [];
 
         foreach ($data_buku as $buku) {
@@ -35,29 +36,43 @@ class LandingController extends Controller
         ];
 
         Buku::where('id_buku',$id_buku)->update($update);
-        $recomendation = Buku::inRandomOrder()->get();
+        $recomendation = Buku::inRandomOrder()->take(6)->get();
         $review = Review::where('id_buku',$id_buku)->get();
         $profil = Profil::all();
 
-        // dd($review);
         return view('pages.detail_buku',['data' => $data_buku,'review' => $review,'random' => $recomendation,'profil' => $profil]);
         
     }
 
     public function komentar(Request $request)
     {
-        $r = mt_rand(0000,9999);
-        $id_review = 'ID-R'.$r;
+        if(!empty(auth()->user()->id_profil)){
 
-        $data = [
-            'id_review' => $id_review,
-            'komentar' => $request->komen,
-            'id_profil' => $request->id_profil,
-            'id_buku' => $request->id_buku
-        ];
+            $validator = Validator::make($request->all(),[
+                'komen' => 'required',
+            ],[
+                'komen.required' => 'Komentar tidak boleh kosong',
+            ]);
 
-        $result = Review::create($data);
-        return back();
+            if($validator->fails()){
+                return back()->withErrors($validator);
+            }
+
+            $r = mt_rand(0000,9999);
+            $id_review = 'ID-R'.$r;
+    
+            $data = [
+                'id_review' => $id_review,
+                'komentar' => $request->komen,
+                'id_profil' => auth()->user()->id_profil,
+                'id_buku' => $request->id_buku
+            ];
+    
+            $result = Review::create($data);
+            return back();
+        } else {
+            return redirect()->route('guest.profil');
+        }
     }
 
     public function pinjam(Request $request)
@@ -97,5 +112,47 @@ class LandingController extends Controller
             return back();
         }
     
+    }
+
+    public function kategori()
+    {
+        $data = Buku::orderBy('created_at','DESC')->get();
+        $kategori = Kategori::get();
+        $ulasanPerBuku = [];
+
+        foreach ($data as $buku) {
+            $jumlahUlasan = Review::where('id_buku', $buku->id_buku)->count();
+            $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
+        }
+        return view('pages.kategori',['data'=>$data, 'kategori' => $kategori,'ulasanPerBuku'=>$ulasanPerBuku]);   
+    }
+
+    public function detailskategori($kategori)
+    {
+        $data = Buku::where('id_kategori',$kategori)->get();
+        $a = Kategori::where('kategori',$kategori)->first();
+        $kategori = $a->kategori;
+        $ulasanPerBuku = [];
+
+        foreach ($data as $buku) {
+            $jumlahUlasan = Review::where('id_buku', $buku->id_buku)->count();
+            $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
+        }
+
+        return view('pages.details-kategori',['data'=>$data,'ulasanPerBuku' => $ulasanPerBuku,'kategori'=>$kategori]);
+    }
+
+    public function detailstats($stats)
+    {
+        $data = Buku::where('status_buku',$stats)->get();
+        $kategori = $stats;
+        $ulasanPerBuku = [];
+
+        foreach ($data as $buku) {
+            $jumlahUlasan = Review::where('id_buku', $buku->id_buku)->count();
+            $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
+        }
+
+        return view('pages.details-kategori',['data'=>$data,'ulasanPerBuku' => $ulasanPerBuku,'kategori'=>$kategori]);
     }
 }

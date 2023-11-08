@@ -11,28 +11,60 @@
 							<button type="button" class="btn btn-success ml-auto btn-sm" id="editButton" value="Edit"> Edit</button>
                         </div>
                         <div class="card-body">
-                            <div class="row">
-								<div class="col-xl-4">
-									
-								  <div class="image-container">
-        						      <label for="gambarInput" class="btn btn-secondary btn-choose ml-auto"><i class="fa fa-file-image"></i> Ganti Profil</label>
-        						      <input type="file" id="gambarInput" accept="image/*">
-        						      <img id="gambarPreview" src="../../UI-peminjaman-buku/img/anime/details-pic.jpg" alt="" style="max-width: 100%; max-height: 100%; border-radius: 20px;">
-        						  </div>
-								</div>
-								<div class="col-xl-8 pt-3">
-									<form>
-										<input type="text" class="form-control mb-3" name="nama" placeholder="Nama Anda" readonly>
-										<input type="text" class="form-control mb-3" name="nama" placeholder="Alamat Anda" readonly>
-										<input type="text" class="form-control mb-3" name="nama" placeholder="Nomor WA Aktif" readonly>
-										<input type="text" class="form-control mb-3" name="nama" placeholder="Username" readonly>
-										<div class="d-flex">
-											<button class="btn btn-info mr-1">Ganti Password</button>
-											<button class="btn btn-danger mr-1">Reset Password</button>
+							@foreach($data as $a)
+								@if($a->id_profil === auth()->user()->id_profil)
+									<div class="row">
+										<div class="col-xl-4">
+
+										  <div class="image-container img-fluid">
+        								      <label for="gambarInput" class="btn btn-secondary btn-choose ml-auto"><i class="fa fa-file-image"></i> Ganti Profil</label>
+        								      <input type="file" id="gambarInput" accept="image/*" value="{{$a->foto}}">
+        								      <img id="gambarPreview" src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/details-pic.jpg')}}" class="img-fluid" alt="" style="max-width: 100%; max-height: 100%; border-radius: 20px;">
+											  <img>
+        								  </div>
 										</div>
-									</form>
-								</div>
-							</div>
+										<div class="col-xl-8 pt-3">
+											<form>
+												@csrf
+												<input type="text" class="form-control mb-3" name="nama" id="nama" placeholder="Nama Anda" value="{{$a->nama}}" readonly>
+												<input type="text" class="form-control mb-3" name="alamat" placeholder="Alamat Anda" id="alamat" value="{{$a->alamat}}" readonly>
+												<input type="number" class="form-control mb-3" name="no_hp" placeholder="Nomor WA Aktif" id="no_hp" value="{{$a->no_hp}}" readonly>
+												<input type="email" class="form-control mb-3" name="email" placeholder="Alamat Email" id="email" value="{{auth()->user()->email}}" readonly>
+												<input type="text" class="form-control mb-3" name="username" id="username" placeholder="Username" value="{{auth()->user()->username}}" readonly>
+											</form>
+											<div class="d-flex">
+													<button class="btn btn-info mr-1" data-toggle="modal" data-target="#exampleModal">Ganti Password</button>
+													
+													<!-- Modal -->
+													<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													  <div class="modal-dialog modal-dialog-centered" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+													    	<form>
+																@csrf
+																<input type="password" id="oldPassword" class="form-control mb-3" placeholder = "Masukan Password Lama">
+																<input type="password" id="password" class="form-control mb-3" placeholder = "Masukan Password Baru">
+																<input type="password" id="confirmation" class="form-control mb-3" placeholder = "Konfirmasi Password Baru">
+																<div id="passwordMatchStatus"></div>
+
+																<button type="button" id="ubahSandi" class="btn btn-success col-12 d-block btn-sm">Ubah</button>
+															</form>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+													<!-- <button class="btn btn-danger mr-1">Reset Password</button> -->
+												</div>
+										</div>
+									</div>
+								@endif
+							@endforeach
                         </div>
                     </div>
 

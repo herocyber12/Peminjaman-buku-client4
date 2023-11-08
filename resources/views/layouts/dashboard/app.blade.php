@@ -20,7 +20,7 @@
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard/sb-admin-2.min.css')}}" rel="stylesheet">
     <style>
-	.image-container {
+    	.image-container {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -184,9 +184,11 @@
         $kategoriSimpan = route('kategori.simpan');
         $penggunaEdit = route('pengguna.update',['id'=>':id']);
         $reservasi = route('reservasi.update',['id'=>':id']);
+        $profil = route('udpate.profil');
     ?>
     <script>
         $(document).ready(function(){
+            const urlProfil = "{{$profil}}";
             const url = "{{$bukuSimpan}}";
             const urlBukuEdit = "{{$bukuEdit}}";
             const urlPenggunaEdit = "{{$penggunaEdit}}";
@@ -223,7 +225,6 @@
                             icon: icon,
                         }).then((result)=> {
                             if (result) {
-                                // Ini akan dijalankan setelah pengguna mengklik tombol OK
                                 location.reload();
                             }
                         });
@@ -311,7 +312,6 @@
                             icon: icon,
                         }).then((result)=> {
                             if (result) {
-                                // Ini akan dijalankan setelah pengguna mengklik tombol OK
                                 location.reload();
                             }
                         });
@@ -384,67 +384,164 @@
                             text:text,
                             icon:icon
                         }).then(() => {
-                            // location.reload();
+                            location.reload();
                         });
                     }
                 })
             });
 
-            var isEditable = false; // Mode awal non-edit
-
-            // Event handler untuk tombol "Edit"
+            var isEditable = false;
+            
             $('#editButton').click(function() {
                 if (isEditable) {
-                    // Jika sedang dalam mode edit, maka kembalikan semua input menjadi readonly
                     $('.form-control').prop('readonly', true);
                     isEditable = false;
-                    // Ubah teks tombol menjadi "Edit"
-                    $(this).text('Selesai');
-                    $(this).val('Kirim'); // Ubah nilai tombol menjadi "Kirim"
+                    $(this).text('Edit');
+                    $(this).val('Edit');
                 } else {
-                    // Jika sedang dalam mode non-edit, maka hapus readonly dari semua input
                     $('.form-control').prop('readonly', false);
                     isEditable = true;
-                    // Ubah teks tombol menjadi "Selesai"
-                    $(this).text('Edit');
-                    $(this).val('Edit'); // Kembalikan nilai tombol menjadi "Edit"
+                    $(this).text('Selesai');
+                    $(this).val('Kirim'); 
+                }
+            });
+            
+            $('#editButton').on('click', function (){
+                var simpanButton = $(this).val();
+                var fileupload = $('#gambarInput')[0].files;
+                // var sinopsis = CKEditor.instances.editor.getData();
+                
+                var formData = new FormData();
+                    formData.append('image', fileupload[0]);
+                    formData.append('nama', $('#nama').val());
+                    formData.append('alamat', $('#alamat').val());
+                    formData.append('no_hp', $('#no_hp').val());
+                    formData.append('email', $('#email').val());
+                    formData.append('username', $('#username').val());
+                    formData.append('_token', "{{ csrf_token() }}");
+
+                if(simpanButton === "Edit"){
+                    $.ajax({
+                        url: urlProfil,
+                        type:'POST',
+                        data:formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success:function(e){
+                            var title =e.title;
+                            var text =e.text;
+                            var icon =e.icon;
+                            if(e.stats === "berhasil"){
+                                Swal.fire({
+                                    title:title,
+                                    text:text,
+                                    icon:icon
+                                }).then(() => {
+                                    // location.reload();
+                                });
+                            } else if(e.stats === "gagal") {
+                                    Swal.fire({
+                                    title:title,
+                                    text:text,
+                                    icon:icon
+                                }).then(() => {
+                                    // location.reload();
+                                });
+                            }
+                        }
+                    });
+                } else {
+                    console.log("Eror");
+                }
+            });
+
+            var liso;
+
+            $("#password, #confirmation").on("input", function() {
+                var password = $("#password").val();
+                var confirmation = $("#confirmation").val();
+                var passwordMatchStatus = $("#passwordMatchStatus");
+                if (password === "" && confirmation === "") {
+                    passwordMatchStatus.text(""); // Kosongkan pesan jika kedua input kosong
+                    passwordMatchStatus.removeClass(); // Kosongkan pesan jika kedua input kosong
+                } else if (password === confirmation) {
+                    liso = "cocok";
+                    passwordMatchStatus.text("Password cocok");
+                    passwordMatchStatus.removeClass('alert alert-danger');
+                    passwordMatchStatus.addClass('alert alert-success');
+                } else {
+                    liso = "tidak cocok";
+                    passwordMatchStatus.text("Password tidak cocok. Silakan periksa kembali.");
+                    passwordMatchStatus.removeClass('alert alert-success');
+                    passwordMatchStatus.addClass('alert alert-danger');
+                }
+            });
+
+            var gantiPassword = "{{route('passwordchange')}}";
+
+            $('#ubahSandi').on('click',function(){
+                var oldPassword = $('#oldPassword').val();
+                var newPassword = $('#password').val();
+
+                var data = {
+                    _token : "{{csrf_token()}}",
+                    oldPassword : oldPassword,
+                    newPassword : newPassword
+                };
+
+                if(liso === "cocok"){
+                    $.ajax({
+                        url:gantiPassword,
+                        type: 'POST',
+                        data: data,
+                        success: function (e){
+                            var title = e.title;
+                            var text = e.text;
+                            var icon = e.icon;
+                            Swal.fire({
+                                title: title,
+                                text: text,
+                                icon: icon,
+                            }).then((result)=> {
+                                if (result) {
+                                    location.reload();
+                                }
+                            });
+                        },error: function (xhr, status, error) {
+                          Swal.fire(
+                            'error',
+                            xhr.status,
+                            error,
+                          );
+                        }  
+                    });
                 }
             });
         });
     </script>
     <script>
         
-        // Ambil elemen input file
         var input = document.getElementById('gambarInput');
-        // Ambil elemen gambar preview
         var preview = document.getElementById('gambarPreview');
 
-        // Tambahkan event listener ketika input berubah
         input.addEventListener('change', function() {
             var file = input.files[0];
             if (file) {
-                // Buat objek URL untuk gambar yang dipilih
                 var url = URL.createObjectURL(file);
-                // Set gambar preview dengan URL yang dibuat
                 preview.src = url;
-                preview.style.display = 'block'; // Tampilkan gambar
+                preview.style.display = 'block';
             }
         });
 
-         // Ambil elemen input file
          var inputEdit = document.getElementById('gambarInputEdit');
-        // Ambil elemen gambar preview
         var previewEdit = document.getElementById('gambarPreviewEdit');
-
-        // Tambahkan event listener ketika input berubah
         inputEdit.addEventListener('change', function() {
             var fileEdit = inputEdit.files[0];
             if (fileEdit) {
-                // Buat objek URL untuk gambar yang dipilih
                 var urlEdit = URL.createObjectURL(fileEdit);
-                // Set gambar preview dengan URL yang dibuat
                 previewEdit.src = urlEdit;
-                previewEdit.style.display = 'block'; // Tampilkan gambar
+                previewEdit.style.display = 'block';
             }
         });
     </script>

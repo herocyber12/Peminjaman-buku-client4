@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\Profil;
 use App\Models\User;
@@ -55,16 +55,18 @@ class AuthController extends Controller
     {
         
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
+            'nama' => 'required|string',
             'alamat' => 'required',
-            'no_hp' => 'required',
+            'no_hp' => 'required|number',
             'email' => 'required',
             'username' => 'required',
             'password' => 'required',
         ],[
             'required' => 'Kolom Harus Diisi',
             'nama.required' => 'Nama Harus Diisi',
+            'nama.string' => 'Nama Harus Berupa huruf',
             'alamat.required' => 'Alamat Harus Diisi',
+            'no_hp.required' => 'Nomor HP Harus Diisi',
             'no_hp.required' => 'Nomor HP Harus Diisi',
             'email.required' => 'Email Harus Diisi',
             'username.required' => 'Username Harus Diisi',
@@ -107,8 +109,33 @@ class AuthController extends Controller
         } else {
             echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
         }
-        
+
         return redirect()->to('login');
+    }
+
+    public function gantiPassword(Request $request)
+    {
+        $user = Auth::user();
+        
+        if(Hash::check($request->oldPassword,$user->password))
+        {
+            $password = Hash::make($request->newPassword);
+            $update = User::where('id',$user->id)->update(['password'=>$password]);
+            if($update){
+                $title = "Berhasil";
+                $text = "Berhasil Ganti Password";
+                $icon = "success";
+            } else {
+                $title = "Gagal";
+                $text = "Gagal Ganti Password";
+                $icon = "error";
+            }
+        }
+        return response()->json([
+            'title' => $title,
+            'title' => $text,
+            'icon' => $icon
+        ]);
     }
 
     public function logout(Request $request)

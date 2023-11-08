@@ -51,7 +51,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="{{route('detail-stats','Tersedia')}}" class="poc-btn">View All <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -62,11 +62,10 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6 mb-5 pb-5 col-xl-3">
                                 <div class="product__item"  style="width: 230px; height: 325px;">
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
-                                        <div class="ep">18 / 18</div>
                                         <div class="st bg-success">{{$a->status_buku}}</div>
                                         <div class="comment"><i class="fa fa-comments"></i> {{
                                              $ulasanPerBuku[$a->id_buku]}}</div>
-                                        <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                                        <div class="view"><i class="fa fa-book"></i> {{$a->totalpeminjaman}}</div>
                                     </div>
                                     <div class="product__item__text">
                                         <ul>
@@ -89,7 +88,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="#" class="primary-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="{{route('detail-stats','Dipinjam')}}" class="poc-btn">View All <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -99,10 +98,9 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6 mb-5 pb-5 col-xl-3">
                                 <div class="product__item"  style="width: 230px; height: 325px;">
                                     <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
-                                        <div class="ep">18 / 18</div>
                                         <div class="st bg-danger">{{$a->status_buku}}</div>
                                         <div class="comment"><i class="fa fa-comments"></i> {{ $ulasanPerBuku[$a->id_buku]}}</div>
-                                        <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                                        <div class="view"><i class="fa fa-book"></i> {{$a->totalpeminjaman}}</div>
                                     </div>
                                     <div class="product__item__text">
                                         <ul>

@@ -12,8 +12,10 @@ use App\Http\Controllers\KategoriConstoller;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\ProfilController;
 use App\Models\Reservasi;
 use App\Models\Review;
+use App\Models\Profil;
 
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +47,10 @@ Route::controller(GuestController::class)->group(function(){
     Route::post('ceklogin','ceklogin')->name('guest.ceklogin');
     Route::get('guest/logout','logout')->name('guest.logout');
     Route::post('guest/create','create')->name('guest.create');
+    Route::get('guest/profil','profil')->middleware('authProfil')->name('guest.profil');
+    Route::post('guest/update','update')->name('guest.update');
+    Route::get('guest/riwayat','riwayat')->middleware('authProfil')->name('guest.riwayat');
+    Route::get('reset-password','resetPassword')->middleware('authProfil')->name('ganti-password');
 });
 
 
@@ -53,6 +59,9 @@ Route::controller(LandingController::class)->group(function(){
     Route::get('detail-buku/{id}','details')->name('detail-buku');
     Route::post('komentar','komentar')->name('komentar');
     Route::post('pinjam','pinjam')->name('pengajuan');
+    Route::get('kategori','kategori')->name('kategori');
+    Route::get('detailskategori/{id}','detailskategori')->name('detail-kategori');
+    Route::get('detailstats/{id}','detailstats')->name('detail-stats');
 });
 
 Route::controller(AuthController::class)->group(function (){
@@ -66,13 +75,20 @@ Route::controller(AuthController::class)->group(function (){
 Route::middleware('auth')->group( function () {
     
     Route::get('/profil',function(){
-        return view('dashboard.profil');
+        $data = Profil::where('id_profil',auth()->user()->id_profil)->get();
+        return view('dashboard.profil',['data' => $data]);
     });
+
+    Route::post('gantiPassword', [AuthController::class,'gantiPassword'])->name('passwordchange');
 
     Route::controller(HomeController::class)->prefix('home')->group(function(){
         Route::get('/','index')->name('home');
     });
 
+    Route::post('/update/profil',[ProfilController::class,'update'])->name('udpate.profil');
+    
+    
+    
     Route::controller(BukuController::class)->prefix('buku')->group(function (){
         Route::get('/','index')->name('buku');
         Route::post('simpan','simpan')->name('buku.simpan');

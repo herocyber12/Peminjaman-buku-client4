@@ -102,7 +102,8 @@
                             <div class="section-title">
                                 <h5>Your Comment</h5>
                             </div>
-                            <form action="">
+                            <form action="{{route('komentar')}}" method="post">
+                                @csrf
                                 <input type="hidden" name="id_buku" value="{{$a->id_buku}}">
                                 <textarea name="koment" placeholder="Your Comment"></textarea>
                                 <button type="submit"><i class="fa fa-location-arrow"></i> Review</button>
