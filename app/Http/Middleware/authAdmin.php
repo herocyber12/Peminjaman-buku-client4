@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Profil;
 
-class authGuest
+class authAdmin
 {
     /**
      * Handle an incoming request.
@@ -20,7 +20,7 @@ class authGuest
     {
         if(Auth::check()){
             $data = Profil::where('id_profil',auth()->user()->id_profil)->first();
-            if($data->level === "Member"){
+            if($data->level === "Admin"){
                 return $next($request);
             } else {
                 return redirect()->to('guest/login');

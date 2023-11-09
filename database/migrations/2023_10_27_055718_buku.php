@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('penerbit',25);
             $table->string('penulis',25);
             $table->mediumInteger('tahun_terbit');
-            $table->enum('status_buku',['Dipinjam','Rusak','Tersedia']);
+            $table->enum('status_buku',['Tersedia','Dipinjam','Rusak']);
             $table->string('id_kategori',25);
             $table->integer('totalpeminjaman');
 

@@ -73,7 +73,7 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('create','create')->name('create');
     Route::post('logout', 'logout')->name('logout');
 });
-Route::middleware('auth')->group( function () {
+Route::middleware('auth','authAdmin')->group( function () {
     
     Route::get('/profil',function(){
         $data = Profil::where('id_profil',auth()->user()->id_profil)->get();

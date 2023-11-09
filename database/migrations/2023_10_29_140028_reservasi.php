@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('reservasi',function(Blueprint $table){
             $table->string('id_reservasi',15)->primary();
-            $table->date('tanggal_dipinjam');
-            $table->date('tanggal_dikembalikan');
+            $table->date('tanggal_dipinjam')->nullable();
+            $table->date('tanggal_dikembalikan')->nullable();
             $table->enum('status_reservasi',['Masih Dipinjam','Sudah Dikembalikan','Pengajuan Peminjaman']);
             $table->enum('status_peminjaman',['Disetujui','Belum Disetujui','Tidak Di Setujui']);
             $table->string('id_profil',15);
