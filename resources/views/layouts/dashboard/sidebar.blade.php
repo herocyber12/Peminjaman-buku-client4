@@ -50,6 +50,11 @@
         <i class="fas fa-fw fa-history"></i>
         <span>Riwayat Peminjaman</span></a>
 </li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ route('kegiatan')}}">
+        <i class="fas fa-fw fa-upload"></i>
+        <span>Upload Kegiatan</span></a>
+</li>
 
 <!-- Divider -->
 <hr class="sidebar-divider d-none d-md-block">

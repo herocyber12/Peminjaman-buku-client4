@@ -72,9 +72,9 @@
 
     @yield('contents')
 
-<!-- Footer Section Begin -->
-@include('layouts.users.footer')
-  <!-- Footer Section End -->
+    <!-- Footer Section Begin -->
+    @include('layouts.users.footer')
+    <!-- Footer Section End -->
 
   <!-- Search model Begin -->
   <div class="search-model">
@@ -115,10 +115,12 @@
 </script>
 <?php 
     $a = route('guest.update');
+    $l = route('kegiatan.simpan');
 ?>
 <script>
     $(document).ready(function(){
         const urlUpdate = "{{$a}}";
+        const urlKegiatan = "{{$l}}";
         $('#ubahGuestProfil').on('click',function(){
             var fileupload = $('#gambarInput')[0].files;
                 // var sinopsis = CKEditor.instances.editor.getData();
@@ -131,7 +133,6 @@
                 formData.append('email', $('#email').val());
                 formData.append('username', $('#username').val());
                 formData.append('_token', "{{ csrf_token() }}");
-            console.log(formData.image);
 
             $.ajax({
                 url:urlUpdate,
@@ -186,44 +187,42 @@
         });
         var gantiPassword = "{{route('passwordchange')}}";
 
-            $('#ubahSandi').on('click',function(){
-                var oldPassword = $('#oldPassword').val();
-                var newPassword = $('#password').val();
-
-                var data = {
-                    _token : "{{csrf_token()}}",
-                    oldPassword : oldPassword,
-                    newPassword : newPassword
-                };
-
-                if(liso === "cocok"){
-                    $.ajax({
-                        url:gantiPassword,
-                        type: 'POST',
-                        data: data,
-                        success: function (e){
-                            var title = e.title;
-                            var text = e.text;
-                            var icon = e.icon;
-                            Swal.fire({
-                                title: title,
-                                text: text,
-                                icon: icon,
-                            }).then((result)=> {
-                                if (result) {
-                                    location.reload();
-                                }
-                            });
-                        },error: function (xhr, status, error) {
-                          Swal.fire(
-                            'error',
-                            xhr.status,
-                            error,
-                          );
-                        }  
-                    });
-                }
-            });
+        $('#ubahSandi').on('click',function(){
+            var oldPassword = $('#oldPassword').val();
+            var newPassword = $('#password').val();
+            var data = {
+                _token : "{{csrf_token()}}",
+                oldPassword : oldPassword,
+                newPassword : newPassword
+            };
+            if(liso === "cocok"){
+                $.ajax({
+                    url:gantiPassword,
+                    type: 'POST',
+                    data: data,
+                    success: function (e){
+                        var title = e.title;
+                        var text = e.text;
+                        var icon = e.icon;
+                        Swal.fire({
+                            title: title,
+                            text: text,
+                            icon: icon,
+                        }).then((result)=> {
+                            if (result) {
+                                location.reload();
+                            }
+                        });
+                    },error: function (xhr, status, error) {
+                      Swal.fire(
+                        'error',
+                        xhr.status,
+                        error,
+                      );
+                    }  
+                });
+            }
+        });
     });
 </script>
 </body>

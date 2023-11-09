@@ -12,6 +12,7 @@ use App\Http\Controllers\KategoriConstoller;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ReservasiController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\ProfilController;
 use App\Models\Reservasi;
 use App\Models\Review;
@@ -111,5 +112,10 @@ Route::middleware('auth')->group( function () {
         Route::get('/','index')->name('reservasi');
         Route::post('update/{id}','update')->name('reservasi.update');
         Route::get('logreservasi','logreservasi')->name('reservasi.riwayat');
+    });
+
+    Route::controller(KegiatanController::class)->prefix('kegiatan')->group(function(){
+        Route::get('/','index')->name('kegiatan');
+        Route::post('simpan','simpan')->name('kegiatan.simpan');
     });
 });

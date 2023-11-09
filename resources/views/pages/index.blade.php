@@ -4,34 +4,17 @@
 <section class="hero">
         <div class="container">
             <div class="hero__slider owl-carousel">
-                <div class="hero__items set-bg img-fluid" data-setbg="{{asset('storage/img/hero/hero-1.jpg')}}">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class=
-                    "hero__text">
-                                <h2>Judul Kegiatan</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="hero__items set-bg img-fluid" data-setbg="img/hero/hero-1.jpg">
+                @foreach($kegiatan as $i)
+                <div class="hero__items set-bg img-fluid" data-setbg="{{asset('storage/'.$i->banner)}}">
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="hero__text">
-                                <h2>Judul Kegiatan</h2>
+                                <h2>{{$i->nama_kegiatan}}</h2>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="hero__items set-bg img-fluid" data-setbg="img/hero/hero-1.jpg">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="hero__text">
-                                <h2>Judul Kegiatan</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>

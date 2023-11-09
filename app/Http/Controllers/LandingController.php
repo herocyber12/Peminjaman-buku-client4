@@ -8,6 +8,7 @@ use App\Models\Review;
 use App\Models\Reservasi;
 use App\Models\Profil;
 use App\Models\Kategori;
+use App\Models\Kegiatan;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
 
@@ -23,7 +24,12 @@ class LandingController extends Controller
             $ulasanPerBuku[$buku->id_buku] = $jumlahUlasan;
         }
 
-        return view('pages.index',['data'=>$data_buku, 'ulasanPerBuku' => $ulasanPerBuku]);
+        $kegiatan = Kegiatan::get();
+
+        return view('pages.index',[
+            'data'=>$data_buku, 
+            'ulasanPerBuku' => $ulasanPerBuku,'kegiatan' => $kegiatan
+        ]);
     }
 
     public function details($id_buku)

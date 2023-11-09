@@ -82,14 +82,14 @@ class BukuController extends Controller
         $files = $request->file('image');
         if(isset($files)){
             $request->validate([
-                    'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-                    'nama_buku' => 'required|string',
-                    'penerbit' => 'required|string',
-                    'penulis' => 'required|string',
-                    'tahun_terbit' => 'required|numeric',
-                    'kategori' => 'required',
-                    'sinopsisEdit' => 'required',
-                ]);
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'nama_buku' => 'required|string',
+                'penerbit' => 'required|string',
+                'penulis' => 'required|string',
+                'tahun_terbit' => 'required|numeric',
+                'kategori' => 'required',
+                'sinopsisEdit' => 'required',
+            ]);
             
             $data = Buku::where('id_buku',$id)->first();
             if(Storage::disk('public')->exists($data->cover))

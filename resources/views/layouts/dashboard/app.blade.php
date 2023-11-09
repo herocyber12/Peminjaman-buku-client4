@@ -185,9 +185,12 @@
         $penggunaEdit = route('pengguna.update',['id'=>':id']);
         $reservasi = route('reservasi.update',['id'=>':id']);
         $profil = route('udpate.profil');
+        $l = route('kegiatan.simpan');
     ?>
     <script>
         $(document).ready(function(){
+            
+            const urlKegiatan = "{{$l}}";
             const urlProfil = "{{$profil}}";
             const url = "{{$bukuSimpan}}";
             const urlBukuEdit = "{{$bukuEdit}}";
@@ -517,6 +520,39 @@
                         }  
                     });
                 }
+            });
+
+            $('#uploadKegiatan').on('click',function(){
+            var fileupload = $('#gambarInput')[0].files;
+                // var sinopsis = CKEditor.instances.editor.getData();
+                
+            var formData = new FormData();
+                formData.append('image', fileupload[0]);
+                formData.append('nama_kegiatan', $('#nama_kegiatan').val());
+                formData.append('_token', "{{ csrf_token() }}");
+            
+                $.ajax({
+                    url:urlKegiatan,
+                    type:"POST",
+                    data:formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success:function(e){
+                        var title = e.title;
+                            var text = e.text;
+                            var icon = e.icon;
+                            Swal.fire({
+                                title: title,
+                                text: text,
+                                icon: icon,
+                            }).then((result)=> {
+                                if (result) {
+                                    location.reload();
+                                }
+                            });
+                    },
+                });
             });
         });
     </script>

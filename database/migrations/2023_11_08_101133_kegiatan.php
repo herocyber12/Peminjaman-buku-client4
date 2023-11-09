@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('review', function(Blueprint $table){
-            $table->string('id_review',15)->primary();
-            $table->enum('rate',['1','2','3','4','5']);
-            $table->text('komentar')->nullable();
-            $table->string('id_profil',15);
-            $table->string('id_buku',15);
-            
+        Schema::create('kegiatan',function(Blueprint $table){
+            $table->id();
+            $table->string('banner',150);
+            $table->string('nama_kegiatan',75);
             $table->timestamps();
         });
     }
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('review');
+        Schema::dropIfExists('kegiatan');    
     }
 };
