@@ -60,12 +60,12 @@
                                         </button>
                                     </form>
                                     <hr>
-                                    <div class="text-center">
+                                    <!-- <div class="text-center">
                                         <a class="small" href="forgot-password.html">Lupa Password?</a>
-                                    </div>
-                                    <div class="text-center">
+                                    </div> -->
+                                    <!-- <div class="text-center">
                                         <a class="small" href="{{route('register')}}">Buat Akun!</a>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>

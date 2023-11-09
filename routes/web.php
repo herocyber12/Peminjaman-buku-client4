@@ -69,7 +69,7 @@ Route::controller(AuthController::class)->group(function (){
     Route::get('login', 'login')->name('login');
     Route::post('cek','cek')->name('cek');
 
-    Route::get('register','register')->name('register');
+    // Route::get('register','register')->name('register');
     Route::post('create','create')->name('create');
     Route::post('logout', 'logout')->name('logout');
 });
