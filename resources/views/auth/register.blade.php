@@ -19,10 +19,46 @@
 
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard/sb-admin-2.min.css')}}" rel="stylesheet">
+    <style>
+        .bg-cover {
+    position: relative;
+}
 
+.bg-cover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8); /* Warna hitam dengan opasitas 10% */
+    z-index: 0; /* Atur z-index sesuai kebutuhan Anda */
+}
+
+.bg-cover {
+    background-color: #4e73df;
+    background-image: url("{{asset('img/bg-login.jpg')}}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+    body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+    }
+    .card {
+    position: relative;
+    z-index: 1; /* Atur z-index sesuai kebutuhan Anda, harus lebih tinggi dari pseudo-elemen ::before */
+}
+    </style>
 </head>
 
-<body class="bg-gradient-primary">
+<body class="bg-cover">
     <div class="container">
 	<div class="col-xl-7 col-md-8 ml-auto mr-auto">
 		

@@ -43,7 +43,11 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->route('home');
+        if($profilData->level === "Admin"){
+            return redirect()->route('home');
+        } else if ($profilData->level === "Member"){
+            return redirect()->route('daftar');
+        }
     }
 
     public function register()
@@ -57,7 +61,7 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required|string',
             'alamat' => 'required',
-            'no_hp' => 'required|number',
+            'no_hp' => 'required|numeric',
             'email' => 'required',
             'username' => 'required',
             'password' => 'required',
@@ -67,7 +71,7 @@ class AuthController extends Controller
             'nama.string' => 'Nama Harus Berupa huruf',
             'alamat.required' => 'Alamat Harus Diisi',
             'no_hp.required' => 'Nomor HP Harus Diisi',
-            'no_hp.required' => 'Nomor HP Harus Diisi',
+            'no_hp.numeric' => 'Nomor HP Harus Diisi',
             'email.required' => 'Email Harus Diisi',
             'username.required' => 'Username Harus Diisi',
             'password.required' => 'Password Harus Diisi',
@@ -87,7 +91,7 @@ class AuthController extends Controller
             'nama' => $request->nama,
             'alamat' => $request->alamat,
             'no_hp' => $request->no_hp,
-            'status' => 'Admin',
+            'status' => 'Member',
         ];
 
         $sql = Profil::create($profil);

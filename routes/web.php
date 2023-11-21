@@ -14,6 +14,7 @@ use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\ProfilController;
+use App\Http\Controllers\TamuController;
 use App\Models\Reservasi;
 use App\Models\Review;
 use App\Models\Profil;
@@ -48,12 +49,11 @@ Route::controller(GuestController::class)->group(function(){
     Route::post('ceklogin','ceklogin')->name('guest.ceklogin');
     Route::get('guest/logout','logout')->name('guest.logout');
     Route::post('guest/create','create')->name('guest.create');
-    Route::get('guest/profil','profil')->middleware('authProfil')->name('guest.profil');
+    Route::get('guest/profil','profil')->middleware('authAdmin')->name('guest.profil');
     Route::post('guest/update','update')->name('guest.update');
-    Route::get('guest/riwayat','riwayat')->middleware('authProfil')->name('guest.riwayat');
-    Route::get('reset-password','resetPassword')->middleware('authProfil')->name('ganti-password');
+    Route::get('guest/riwayat','riwayat')->middleware('authAdmin')->name('guest.riwayat');
+    Route::get('reset-password','resetPassword')->middleware('authAdmin')->name('ganti-password');
 });
-
 
 Route::controller(LandingController::class)->group(function(){
     Route::get('daftar-buku','index')->name('daftar');
@@ -63,13 +63,14 @@ Route::controller(LandingController::class)->group(function(){
     Route::get('kategori','kategori')->name('kategori');
     Route::get('detailskategori/{id}','detailskategori')->name('detail-kategori');
     Route::get('detailstats/{id}','detailstats')->name('detail-stats');
+    Route::post('isi-tamu','tamucreate')->name('tamu-form');
 });
 
 Route::controller(AuthController::class)->group(function (){
     Route::get('login', 'login')->name('login');
     Route::post('cek','cek')->name('cek');
 
-    // Route::get('register','register')->name('register');
+    Route::get('register','register')->name('register');
     Route::post('create','create')->name('create');
     Route::post('logout', 'logout')->name('logout');
 });
@@ -84,11 +85,14 @@ Route::middleware('auth','authAdmin')->group( function () {
 
     Route::controller(HomeController::class)->prefix('home')->group(function(){
         Route::get('/','index')->name('home');
+        Route::get('/viewer','chart')->name('chart');
     });
 
     Route::post('/update/profil',[ProfilController::class,'update'])->name('udpate.profil');
     
-    
+    Route::controller(TamuController::class)->prefix('tamu')->group(function(){
+        Route::get('/','index')->name('tamu');
+    });
     
     Route::controller(BukuController::class)->prefix('buku')->group(function (){
         Route::get('/','index')->name('buku');

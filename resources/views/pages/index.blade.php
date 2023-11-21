@@ -1,5 +1,41 @@
 @extends('layouts/users.app')
 @section('contents')
+
+@if(!auth()->user())
+
+<!-- Modal -->
+<div class="modal fade" id="landingTamu" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Anda Belum Login</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+            <input type="text" name="nama" class="form-control mb-3" id="namaTamu" placeholder="Masukan Nama Anda">
+            <input type="text" name="asal" class="form-control mb-3" id="asalTamu" placeholder="Masukan Asal Anda, Contoh : SDN 3 Contoh Kelas 3">
+            <button type="button" class="btn btn-success col-12 btn-sm d-block" id="absen">Lanjut Pinjam Buku</button>
+        </form>
+        <hr>
+            <div clas="row">
+                <center>
+                <div>
+                    <a href="{{route('login')}}">Sudah Punya Akun? Masuk!</a>
+                </div>
+                <div>
+                    <a href="{{route('register')}}">Belum Punya Akun? Daftar!</a>
+                </div> 
+
+                </center>
+            </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endif 
 <!-- Hero Section Begin -->
 <section class="hero">
         <div class="container">

@@ -50,22 +50,22 @@
                   <tr>
                       <th>Banner</th>
                       <th>Nama Kegiatan</th>
-					  <th>Aksi</th>
+					            <th>Aksi</th>
                   </tr>
                 </thead>
                 <tfoot>
                     <tr>
                       <th>Banner</th>
                       <th>Nama Kegiatan</th>
-					  <th>Aksi</th>
+					            <th>Aksi</th>
                   </tr>
                 </tfoot>
                 <tbody class="text-center ">
-				    @foreach($data as $a)
+				          @foreach($data as $a)
                     <tr>
-                        <td><img src="{{asset('storage/'. $a->banner)}}" class="img-fluid" alt="alternative"></td>
+                        <td><img src="{{asset('storage/'. $a->banner)}}" class="img-fluid" width="150px" alt="alternative"></td>
                         <td>{{$a->nama_kegiatan}}</td>
-                        <td>
+                        <td class="align-middle">
                             <a class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</a>
                         </td>
                     </tr>

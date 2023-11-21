@@ -7,7 +7,7 @@
     <meta name="keywords" content="education,public,html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Anime | Template</title>
+    <title>Perpustakaan Widaya Kusuma</title>
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -99,26 +99,21 @@
 <script src="{{asset('js/landing/owl.carousel.min.js')}}"></script>
 <script src="{{asset('js/landing/main.js')}}"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-<script>
-    
-	new DataTable('#example');
-    var input = document.getElementById('gambarInput');
-    var preview = document.getElementById('gambarPreview');
-    input.addEventListener('change', function() {
-        var file = input.files[0];
-        if (file) {
-            var url = URL.createObjectURL(file);
-            preview.src = url;
-            preview.style.display = 'block';
-        }
-    });
-</script>
+
 <?php 
     $a = route('guest.update');
     $l = route('kegiatan.simpan');
 ?>
 <script>
     $(document).ready(function(){
+        var delayTime = 3000;
+
+        console.log(delayTime);
+
+        setTimeout(function (){
+            $('#landingTamu').modal('show');
+        },delayTime);
+        
         const urlUpdate = "{{$a}}";
         const urlKegiatan = "{{$l}}";
         $('#ubahGuestProfil').on('click',function(){
@@ -165,6 +160,31 @@
                 }
             });
         });
+
+        var urlTamu = "{{route('tamu-form')}}";
+
+        console.log(urlTamu);
+        $('#absen').on('click',function(){
+            var namaTamu = $('#namaTamu').val();
+            var asalTamu = $('#asalTamu').val();
+            var data = {
+                _token : "{{csrf_token()}}",
+                nama:namaTamu,
+                asal:asalTamu
+            }
+            $.ajax({
+                url: urlTamu,
+                type: 'POST',
+                data:data,
+                success:function(e){
+                    if(e.stats === "Berhasil")
+                    {
+                        alert('Silahkan Lanjut Mengunjungi Perpustakaan Widya Kusuma');
+                    }
+                }
+                
+            });
+        })
 
         $("#password, #confirmation").on("input", function() {
                 var password = $("#password").val();
@@ -223,6 +243,20 @@
                 });
             }
         });
+    });
+</script>
+<script>
+    
+	new DataTable('#example');
+    var input = document.getElementById('gambarInput');
+    var preview = document.getElementById('gambarPreview');
+    input.addEventListener('change', function() {
+        var file = input.files[0];
+        if (file) {
+            var url = URL.createObjectURL(file);
+            preview.src = url;
+            preview.style.display = 'block';
+        }
     });
 </script>
 </body>

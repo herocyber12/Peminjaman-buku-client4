@@ -21,12 +21,15 @@ class authAdmin
         if(Auth::check()){
             $data = Profil::where('id_profil',auth()->user()->id_profil)->first();
             if($data->level === "Admin"){
-                return $next($request);
+                return $next($request);     
+            } else if($data->level === "Member"){
+                
+                return $next($request);     
             } else {
-                return redirect()->to('guest/login');
+            return redirect()->route('login');
             }
         } else {
-            return redirect()->to('guest/login');
+            return redirect()->route('login');
         }
     }
 }

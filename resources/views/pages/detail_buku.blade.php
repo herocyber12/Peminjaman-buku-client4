@@ -1,6 +1,5 @@
 @extends('layouts/users.app')
 @section('contents')
-
     <!-- Anime Section Begin -->
     <section class="anime-details spad">
         <div class="container">

@@ -38,17 +38,20 @@
         <i class="fas fa-fw fa-users"></i>
         <span>Pengguna</span></a>
 </li>
-</li>
 <li class="nav-item">
     <a class="nav-link" href="{{route('reservasi')}}">
         <i class="fas fa-fw fa-archive"></i>
         <span>Peminjaman</span></a>
 </li>
-</li>
 <li class="nav-item">
     <a class="nav-link" href="{{ route('reservasi.riwayat')}}">
         <i class="fas fa-fw fa-history"></i>
         <span>Riwayat Peminjaman</span></a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="{{ route('tamu')}}">
+        <i class="fas fa-fw fa-people"></i>
+        <span>Tamu</span></a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="{{ route('kegiatan')}}">

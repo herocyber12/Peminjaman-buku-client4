@@ -64,6 +64,7 @@ class ReservasiController extends Controller
                 $no_hp = Profil::where('id_profil',$c->id_profil)->first();
                 $no_hp = strval($no_hp->no_hp);
                 $namabuku = Buku::where('id_buku',$c->id_buku)->first();
+                
                 $response = Http::withHeaders([
                     'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
                 ])->post('https://api.fonnte.com/send',[

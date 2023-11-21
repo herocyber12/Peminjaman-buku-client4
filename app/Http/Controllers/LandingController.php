@@ -9,13 +9,24 @@ use App\Models\Reservasi;
 use App\Models\Profil;
 use App\Models\Kategori;
 use App\Models\Kegiatan;
+use App\Models\Viewer;
+use App\Models\Tamu;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Crypt;
 
 class LandingController extends Controller
 {
     public function index()
     {
+        $ip = request()->ip();
+        $encryptedIp = Crypt::encryptString($ip);
+
+        Viewer::create([
+            'id_cache' => $encryptedIp,
+            'tanggal' => date('Y-m-d')
+        ]);
+
         $data_buku = Buku::latest()->take(8)->get();
         $ulasanPerBuku = [];
 
@@ -160,5 +171,22 @@ class LandingController extends Controller
         }
 
         return view('pages.details-kategori',['data'=>$data,'ulasanPerBuku' => $ulasanPerBuku,'kategori'=>$kategori]);
+    }
+
+    public function tamucreate(Request $request)
+    {
+        $data = [
+            'nama' => $request->nama,
+            'asal' => $request->asal,
+        ];
+
+        $result = Tamu::create($data);
+        
+        if($result){
+            $stats = "Berhasil";
+        } else {
+            $stats = "Gagal";
+        }
+        return response()->json(['stats' => $stats]);
     }
 }

@@ -13,7 +13,7 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li class="active"><a href="{{route('daftar')}}">Home</a></li>
-                                <li><a href="{{route('kategori')}}">Kategori <span class="arrow_carrot-down"></span></a></li>
+                                <li><a href="{{route('kategori')}}">Kategori</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -21,12 +21,19 @@
                 <div class="col-lg-2">
                     <div class="header__right d-flex">
                         @if(auth()->user())
-                            <a href="{{route('guest.profil')}}" class="btn btn-outline-warning btn-sm">Member</a>
-                            <a href="{{url('guest/logout')}}" class="btn btn-danger btn-sm">Logout</a>
+                            <?php 
+                            if(session('profil')->level === "Admin"):
+                                $url = url('profil');
+                            elseif (session('profil')->level === "Member"):
+                                $url = route('guest.profil');
+                            endif
+                            ?>        
+                            <a href="{{$url}}">{{session('profil')->nama}} <span class="icon_profile"></span></a>
+                            <!-- <a href="{{route('guest.profil')}}" class="btn btn-outline-warning btn-sm">Member</a>
+                            <a href="{{url('guest/logout')}}" class="btn btn-danger btn-sm">Logout</a> -->
                         @else
-                            <a href="{{url('guest/login')}}" class="btn btn-success btn-sm">Login</a>
+                            <a href="{{url('login')}}" class="btn btn-success btn-sm">Login</a>
                         @endif
-                        <!-- <a href="./login.html"><span class="icon_profile"></span></a> -->
                     </div>
                 </div>
             </div>
