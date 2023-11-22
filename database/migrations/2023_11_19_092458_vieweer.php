@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('viewer',function(Blueprint $table){
             $table->id();
             $table->string('id_cache');
+            $table->date('tanggal');
             $table->timestamps();
         });
     }
