@@ -74,6 +74,9 @@ Route::controller(AuthController::class)->group(function (){
     Route::post('create','create')->name('create');
     Route::post('logout', 'logout')->name('logout');
 });
+
+Route::get('/info/{id}',[ProfilController::class,'info'])->name('info.profil');
+
 Route::middleware('auth','authAdmin')->group( function () {
     
     Route::get('/profil',function(){

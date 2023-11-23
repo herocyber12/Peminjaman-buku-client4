@@ -50,7 +50,7 @@
 </li>
 <li class="nav-item">
     <a class="nav-link" href="{{ route('tamu')}}">
-        <i class="fas fa-fw fa-people"></i>
+        <i class="fas fa-fw fa-address-book"></i>
         <span>Tamu</span></a>
 </li>
 <li class="nav-item">

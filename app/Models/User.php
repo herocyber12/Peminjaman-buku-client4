@@ -47,4 +47,9 @@ class User extends Authenticatable
     {
        return $this->belongsTo(Profil::class,'id_profil','id_profil');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'id_profil';
+    }
 }

@@ -178,4 +178,12 @@ class ProfilController extends Controller
             }
         }
     }
+
+    public function info($id)
+    {
+        $id = decrypt($id);
+        $data = $id->join('profil','users.id_profil','=','profil.id_profil')->select('users.*','profil.*')->first();
+
+        return view('dashboard.info-akun',['data' => $data]);
+    }
 }

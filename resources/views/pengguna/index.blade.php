@@ -24,7 +24,7 @@
                       <th>Alamat</th>
                       <th>Nomor Handphone</th>
                       <th>Level</th>
-                      <th>QR Code</th>
+                      <th>Profil Pengguna</th>
 						          <th>Aksi</th>
                   </tr>
                 </thead>
@@ -36,7 +36,7 @@
                     <th>Alamat</th>
                     <th>Nomor Handphone</th>
                     <th>Level</th>
-                    <th>QR Code</th>
+                    <th>Profil Pengguna</th>
 						        <th>Aksi</th>
                   </tr>
                 </tfoot>
@@ -47,11 +47,11 @@
 					          <td class="align-middle"><img src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/review-0.jpg')}}" class="img-fluid" alt="" width="100"></td>
 					          <td class="align-middle">{{$a->nama}}</td>
 					          <td class="align-middle">{{$a->alamat}}</td>
-					          <td class="align-middle">{{$a->no_hp}}</td>
+					          <td class="align-middle">0{{$a->no_hp}}</td>
 					          <td class="align-middle">{{$a->level}}</td>
-					          <td class="align-middle">{!! QrCode::size(100)->generate('showModalstrp("editModal{{$a->id_profil}}")') !!}</td>
+					          <td class="align-middle">{!! QrCode::size(100)->generate(route('info.profil',encrypt($a->id_profil))) !!}</td>
 					          <td class="align-middle">
-					          	<button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</button>
+					          	<!-- <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</button> -->
 					          	<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_profil}}"><i class="fa fa-wrench"></i> Edit</button>
 					          	<a href="{{route('pengguna.hapus',$a->id_profil)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</a>
 					          </td>
