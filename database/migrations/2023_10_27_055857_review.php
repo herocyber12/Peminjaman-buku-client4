@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('review', function(Blueprint $table){
             $table->string('id_review',15)->primary();
-            $table->enum('rate',['1','2','3','4','5']);
             $table->text('komentar')->nullable();
             $table->string('id_profil',15);
             $table->string('id_buku',15);

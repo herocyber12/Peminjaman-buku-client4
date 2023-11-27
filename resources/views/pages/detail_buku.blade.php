@@ -3,30 +3,24 @@
     <!-- Anime Section Begin -->
     <section class="anime-details spad">
         <div class="container">
+            
             <div class="anime__details__content">
                 <div class="row">
                     @foreach($data as $a)
                     <div class="col-lg-3">
-                        <div class="anime__details__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
-                            <div class="comment"><i class="fa fa-comments"></i> 11</div>
-                            <div class="view"><i class="fa fa-eye"></i> 9141</div>
+                        <div class="card card-body shadow">
+                            <div class="anime__details__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-9">
+                        <div class="card card-body shadow">
+                            
                         <div class="anime__details__text">
                             <div class="anime__details__title">
                                 <h3>{{$a->nama_buku}}</h3>
+                                <hr>
                             </div>
-                            <!-- <div class="anime__details__rating">
-                                <div class="rating">
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star"></i></a>
-                                    <a href="#"><i class="fa fa-star-half-o"></i></a>
-                                </div>
-                                <span>1.029 Votes (Optional)</span>
-                            </div> -->
                             <?php echo $a->sinopsis ?>
                             <div class="anime__details__widget">
                                 <div class="row">
@@ -63,12 +57,14 @@
                                 </div>
                             </div>
                         </div>
+                        </div>
                     
                     @endforeach
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-8 col-md-8 col-xl-8">
+                        
                         <div class="anime__details__review">
                             <div class="section-title">
                                 <h5>Reviews</h5>
@@ -83,10 +79,10 @@
                                     @if($r->id_profil === $p->id_profil)
                                     <div class="anime__review__item">
                                         <div class="anime__review__item__pic">
-                                            <img src="{{asset('storage/'.$p->foto)}}" alt="">
+                                            <img src="{{isset($p->foto) ? asset('storage/'.$p->foto) : asset('img/anime/review-0.jpg')}}" alt="">
                                         </div>
                                         <div class="anime__review__item__text">
-                                            <h6>{{$r->nama}} - <span>1 Hour ago</span></h6>
+                                            <h6>{{$p->nama}}</h6>
                                             <p>{{$r->komentar}}</p>
                                         </div>
                                     </div>
@@ -116,8 +112,6 @@
                             </div>
                             @foreach($random as $d)
                             <div class="product__sidebar__view__item set-bg" data-setbg="{{asset('storage/'.$d->cover)}}">
-                                <div class="ep">18 / ?</div>
-                                <div class="view"><i class="fa fa-eye"></i> 9141</div>
                                 <h5><a href="{{route('detail-buku',$d->id_buku)}}" class="text-primary">{{$d->nama_buku}}</a></h5>
                             </div>
                             @endforeach

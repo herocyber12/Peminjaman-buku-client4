@@ -22,20 +22,8 @@ class ProfilTable extends Seeder
             'nama' => 'aspwe',
             'alamat'=> 'mars',
             'no_hp' => '08327367262',
-            'qrcode'=>'ini qrcode',
-            'level'=> 'Member',
-            'foto' => 'Anjas.jpg',
+            'level'=> 'Admin',
             
-        ]);
-
-        DB::table('profil')->insert([
-            'id_profil' => 'ID-ID-P456542',
-            'nama' => 'hehe',
-            'alamat'=> 'pluto',
-            'no_hp' => '08327367262',
-            'qrcode'=>'ini qrcode',
-            'level'=> 'Member',
-            'foto' => 'Anjas.jpg',
         ]);
     }
 }

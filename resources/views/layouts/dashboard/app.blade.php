@@ -5,6 +5,7 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-signin-client_id" content="328098397708-rc589apqeivagiq52o8pnm3gtov7kief.apps.googleusercontent.com.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">

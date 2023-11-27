@@ -12,7 +12,6 @@ class Buku extends Model
     protected $fillable = [
         'id_buku',
         'cover',
-        'qrcode',
         'sinopsis',
         'nama_buku',
         'penerbit',

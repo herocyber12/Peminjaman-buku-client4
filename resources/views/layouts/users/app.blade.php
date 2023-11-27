@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="328098397708-rc589apqeivagiq52o8pnm3gtov7kief.apps.googleusercontent.com.apps.googleusercontent.com">
     <meta name="description" content="Perpustakaan Widaya Kusuma">
     <meta name="keywords" content="education,public,html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -108,8 +109,6 @@
     $(document).ready(function(){
         var delayTime = 3000;
 
-        console.log(delayTime);
-
         setTimeout(function (){
             $('#landingTamu').modal('show');
         },delayTime);
@@ -157,13 +156,14 @@
                             location.reload();
                         });
                     }
-                }
+                },error: function (xhr, status, error) {
+                       console.log("Gagal: " + xhr.status + " - " + error);
+                    }      
             });
         });
 
         var urlTamu = "{{route('tamu-form')}}";
 
-        console.log(urlTamu);
         $('#absen').on('click',function(){
             var namaTamu = $('#namaTamu').val();
             var asalTamu = $('#asalTamu').val();

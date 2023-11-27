@@ -42,12 +42,12 @@ class BukuController extends Controller
            
             $path = $request->file('image')->store('/img/cover','public');
         } else {
-            return "gagal";
+            return back();
         }
+        
         $data = [
             'id_buku' => $idbuku,
             'cover' => $path,
-            'qrcode' => "coba",
             'sinopsis' => $request->input('sinopsis'),
             'nama_buku'=> $request->nama_buku,
             'penerbit' => $request->penerbit,
@@ -100,7 +100,6 @@ class BukuController extends Controller
                         $path = $request->file('image')->store('/img/cover','public');
                         $update = [
                             'cover' => $path,
-                            'qrcode' => "coba",
                             'sinopsis' => $request->input('sinopsisEdit'),
                             'nama_buku'=> $request->nama_buku,
                             'penerbit' => $request->penerbit,
@@ -145,7 +144,6 @@ class BukuController extends Controller
                     'kategori' => 'required',
                 ]);
             $update = [
-                'qrcode' => "coba",
                 'sinopsis' => $request->input('sinopsisEdit'),
                 'nama_buku'=> $request->nama_buku,
                 'penerbit' => $request->penerbit,

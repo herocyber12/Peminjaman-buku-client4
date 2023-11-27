@@ -15,6 +15,7 @@ use App\Http\Controllers\ReservasiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\TamuController;
+use App\Http\Controllers\GoogleController;
 use App\Models\Reservasi;
 use App\Models\Review;
 use App\Models\Profil;
@@ -76,6 +77,11 @@ Route::controller(AuthController::class)->group(function (){
 });
 
 Route::get('/info/{id}',[ProfilController::class,'info'])->name('info.profil');
+
+Route::controller(GoogleController::class)->group(function(){
+    Route::get('login/google', 'redirectGoogle')->name('login.google');
+    Route::get('login/google/callback','handleGoogleCallback')->name('callback');
+});
 
 Route::middleware('auth','authAdmin')->group( function () {
     

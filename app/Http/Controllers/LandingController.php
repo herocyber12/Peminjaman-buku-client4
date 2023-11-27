@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Review;
@@ -39,7 +40,8 @@ class LandingController extends Controller
 
         return view('pages.index',[
             'data'=>$data_buku, 
-            'ulasanPerBuku' => $ulasanPerBuku,'kegiatan' => $kegiatan
+            'ulasanPerBuku' => $ulasanPerBuku,
+            'kegiatan' => $kegiatan
         ]);
     }
 
@@ -63,12 +65,12 @@ class LandingController extends Controller
 
     public function komentar(Request $request)
     {
-        if(!empty(auth()->user()->id_profil)){
+        if(auth()->user()){
 
             $validator = Validator::make($request->all(),[
-                'komen' => 'required',
+                'koment' => 'required',
             ],[
-                'komen.required' => 'Komentar tidak boleh kosong',
+                'koment.required' => 'Komentar tidak boleh kosong',
             ]);
 
             if($validator->fails()){
@@ -80,11 +82,10 @@ class LandingController extends Controller
     
             $data = [
                 'id_review' => $id_review,
-                'komentar' => $request->komen,
+                'komentar' => $request->koment,
                 'id_profil' => auth()->user()->id_profil,
                 'id_buku' => $request->id_buku
             ];
-    
             $result = Review::create($data);
             return back();
         } else {

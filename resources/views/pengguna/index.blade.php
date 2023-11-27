@@ -78,7 +78,7 @@
                               </form>
 			                      </div>
 			                      <div class="col-md-6 mb-3">
-                              <h5 class="text-primary">Form Edit Data Buku</h5>
+                              <h5 class="text-primary">Form Edit Data Pengguna</h5>
 			                 	      <div class="mt-3">
 			                 	        <form >
                                 @csrf  

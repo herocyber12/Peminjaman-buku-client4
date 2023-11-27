@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-
+    <meta name="google-signin-client_id" content="677057076887-j1atl62afa13k1u666o2gno1t9mjv35j.apps.googleusercontent.com">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Login</title>
+    <title>Login | Perpustakaan Widaya Kusuma</title>
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/dashboard/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
@@ -96,6 +96,8 @@
                                         </button>
                                     </form>
                                     <hr>
+                                    <!-- <div class="g-signin2"><a href="{{url('login/google')}}">Login Goole</a></div> -->
+                                    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
                                     <div class="text-center">
                                         <a class="small" href="forgot-password.html">Lupa Password?</a>
                                     </div>
@@ -115,6 +117,7 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
     <script src="{{asset('vendor/dashboard/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('vendor/dashboard/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
 

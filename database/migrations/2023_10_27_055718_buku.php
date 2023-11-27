@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('buku',function(Blueprint $table){
             $table->string('id_buku',15)->primary();
             $table->string('cover',125);
-            $table->string('qrcode');
             $table->text('sinopsis');
             $table->string('nama_buku',50);
             $table->string('penerbit',25);

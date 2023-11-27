@@ -57,64 +57,68 @@ class AuthController extends Controller
 
     public function create(Request $request)
     {
-        
-        $validator = Validator::make($request->all(), [
-            'nama' => 'required|string',
-            'alamat' => 'required',
-            'no_hp' => 'required|numeric',
-            'email' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-        ],[
-            'required' => 'Kolom Harus Diisi',
-            'nama.required' => 'Nama Harus Diisi',
-            'nama.string' => 'Nama Harus Berupa huruf',
-            'alamat.required' => 'Alamat Harus Diisi',
-            'no_hp.required' => 'Nomor HP Harus Diisi',
-            'no_hp.numeric' => 'Nomor HP Harus Diisi',
-            'email.required' => 'Email Harus Diisi',
-            'username.required' => 'Username Harus Diisi',
-            'password.required' => 'Password Harus Diisi',
-        ]);
 
-        if($validator->fails()){
-            return back()->withErrors($validator)->withInput();
-        }
-
-        $a = mt_rand(0000,9999);
-        $b = mt_rand(0000,9999);
-        $uid = "UID-".$a;
-        $idp = "ID-P".$b;
-
-        $profil = [
-            'id_profil' => $idp,
-            'nama' => $request->nama,
-            'alamat' => $request->alamat,
-            'no_hp' => $request->no_hp,
-            'status' => 'Member',
-        ];
-
-        $sql = Profil::create($profil);
-        if($sql){
-            $users = [
-                'uid' => $uid,
-                'username' => $request->username,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
+        try {
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required|string',
+                'alamat' => 'required',
+                'no_hp' => 'required|numeric',
+                'email' => 'required',
+                'username' => 'required',
+                'password' => 'required',
+            ],[
+                'required' => 'Kolom Harus Diisi',
+                'nama.required' => 'Nama Harus Diisi',
+                'nama.string' => 'Nama Harus Berupa huruf',
+                'alamat.required' => 'Alamat Harus Diisi',
+                'no_hp.required' => 'Nomor HP Harus Diisi',
+                'no_hp.numeric' => 'Nomor HP Harus Diisi',
+                'email.required' => 'Email Harus Diisi',
+                'username.required' => 'Username Harus Diisi',
+                'password.required' => 'Password Harus Diisi',
+            ]);
+    
+            if($validator->fails()){
+                return back()->withErrors($validator)->withInput();
+            }
+    
+            $a = mt_rand(0000,9999);
+            $b = mt_rand(0000,9999);
+            $uid = "UID-".$a;
+            $idp = "ID-P".$b;
+    
+            $profil = [
                 'id_profil' => $idp,
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+                'status' => 'Member',
             ];
-
-            $sql = User::create($users);
+    
+            $sql = Profil::create($profil);
             if($sql){
-                echo "<script>alert('Berhasil')</script>";
+                $users = [
+                    'uid' => $uid,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'id_profil' => $idp,
+                ];
+    
+                $sql = User::create($users);
+                if($sql){
+                    echo "<script>alert('Berhasil')</script>";
+                } else {
+                    echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
+                }
             } else {
                 echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
             }
-        } else {
-            echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
+    
+            return redirect()->to('login');
+        } catch (\Exception $e){
+            return back()->withErrors(['eror' => 'Terjadi kesalahan.'])->withInput();
         }
-
-        return redirect()->to('login');
     }
 
     public function gantiPassword(Request $request)

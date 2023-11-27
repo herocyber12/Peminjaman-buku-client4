@@ -25,7 +25,7 @@
                         <div class="image-container img-fluid">
 	                        <label for="gambarInput" class="btn btn-secondary btn-choose ml-auto"><i class="fa fa-file-image"></i> Pilih Cover</label>
 	                        <input type="file" id="gambarInput" accept="image/*" value="{{$a->foto}}">
-	                        <img id="gambarPreview" src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/details-pic.jpg')}}" alt="" style="max-width: 100%; max-height: 100%; border-radius: 50%;">
+	                        <img id="gambarPreview" src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/review-0.jpg')}}" alt="" style="max-width: 100%; max-height: 100%; border-radius: 5px;">
 	                    </div>
                     </div>
                     <div class="akun__qrcode mb-2 mt-3 ml-5 pl-auto">
@@ -78,7 +78,7 @@
 
                         <!-- Modal -->
                         <div class="modal fade" id="kartuMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                               <div class="modal-body">
                                 
@@ -99,11 +99,12 @@
                                     </div>
                                     <div class="card-body bg-info">
                                         <div class="row d-flex align-items-cneter">
-                                            <div class="col-xl-6">
-                                            <img src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/details-pic.jpg')}}" alt="" style="width:50%; height:auto; max-width: 100%; max-height: 100%; border-radius: 5px;">
+                                            <div class="col-xl-4">
+                                            <img src="{{isset($a->foto) ? asset('storage/'.$a->foto) : asset('img/anime/review-0.jpg')}}" alt="" style="width:100%; height:auto; max-width: 100%; max-height: 100%; border-radius: 5px;">
 	                    
                                             </div>  
-                                            <div class="col-xl-6 d-flex flex-column">
+                                            <div class="col-xl-7 d-flex flex-column">
+                                                <label class="text-white">ID : <span>{{$a->id_profil}}</span></label>
                                                 <label class="text-white">Nama : <span>{{$a->nama}}</span></label>
                                                 <label class="text-white">Alamat : <span>{{$a->alamat}}</span></label>
                                             </div>

@@ -13,8 +13,7 @@ return new class extends Migration
             $table->string('alamat', 75);
             $table->bigInteger('no_hp');
             $table->enum('level',['Member','Admin'])->default('Member');
-            $table->string('qrcode')->nullable();
-            $table->string('foto', 50)->nullable();
+            $table->string('foto', 175)->nullable();
             $table->timestamps();
         });
     }

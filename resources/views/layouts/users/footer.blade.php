@@ -12,10 +12,8 @@
             <div class="col-lg-6">
                 <div class="footer__nav">
                     <ul>
-                        <li class="active"><a href="./index.html">Homepage</a></li>
-                        <li><a href="./categories.html">Categories</a></li>
-                        <li><a href="./blog.html">Our Blog</a></li>
-                        <li><a href="#">Contacts</a></li>
+                        <li><a href="{{route('daftar')}}">Home</a></li>
+                        <li><a href="{{route('kategori')}}">Kategori</a></li>
                     </ul>
                 </div>
             </div>

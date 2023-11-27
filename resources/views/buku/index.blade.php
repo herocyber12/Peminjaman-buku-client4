@@ -152,7 +152,6 @@
                                             <th>Penulis</th>
                                             <th>Tahun Terbit</th>
                                             <th>Kategori</th>
-                                            <th>QR Code</th>
 											                      <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -164,7 +163,6 @@
                                             <th>Penulis</th>
                                             <th>Tahun Terbit</th>
                                             <th>Kategori</th>
-                                            <th>QR Code</th>
 											                      <th>Aksi</th>
                                         </tr>
                                     </tfoot>
@@ -177,9 +175,7 @@
 									                  		<td class="align-middle">{{$a->penulis}}</td>
 									                  		<td class="align-middle">{{$a->tahun_terbit}}</td>
 									                  		<td class="align-middle">{{$a->id_kategori}}</td>
-									                  		<td class="align-middle">{!! QrCode::size(100)->generate(route('login')) !!}</td>
 									                  		<td class="align-middle">
-									                  			<button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</button>
 									                  			<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_buku}}"><i class="fa fa-wrench"></i> Edit</button>
 									                  			<a href="{{route('buku.hapus',$a->id_buku)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</a>
 									                  		</td>

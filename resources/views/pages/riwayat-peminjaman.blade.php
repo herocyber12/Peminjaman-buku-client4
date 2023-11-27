@@ -33,7 +33,6 @@
 						</tr>
 					</tfoot>
 					<tbody>
-                        @php
                         @foreach($data as $a)
                         <tr>
                             <td><img src="{{asset('storage/'.$a->cover)}}" class="img-fluid" style="max-width:100%;max-height:100%;"></td>

@@ -41,86 +41,54 @@ class ProfilController extends Controller
                 return back()->withErrors($validator)->withInput();
             }
 
-            $data = User::join('profil','users.id_profil','=','profil.id_profil')->where('users.id_profil',$id_profil)->select('users.username','users.email','profil.*')->first();
+            $data = User::join('profil', 'users.id_profil', '=', 'profil.id_profil')->where('users.id_profil', $id_profil)->select('users.username', 'users.email', 'profil.*')->first();
+
+            if($data && $data->foto){
+
+                $path = $data->foto;
             
-            if(Storage::disk('public')->exists($data->foto))
-            {
-                $oldFoto = Storage::disk('public')->delete([$data->foto]);
-
-                if($oldFoto)
-                {
-                    $path = $request->file('image')->store('/img/foto','public');
-
-                    $updateProfil = [
-                        'nama' => $request->nama,
-                        'alamat' => $request->alamat,
-                        'no_hp' => $request->no_hp,
-                        'foto' => $path,
-                    ];
-
-                    $updateUser = [
-                        'email' => $request->email,
-                        'username' => $request->username
-                    ];
-
+            // Periksa apakah foto ada di folder
+            if (Storage::disk('public')->exists($path)) {
+                // Jika foto ada, hapus foto lama
+                $oldFoto = Storage::disk('public')->delete([$path]);
+            }
+            }
+            
+            // Simpan foto baru
+            $path = $request->file('image')->store('/img/foto', 'public');
+            
+            $updateProfil = [
+                'nama' => $request->nama,
+                'alamat' => $request->alamat,
+                'no_hp' => $request->no_hp,
+                'foto' => $path,
+            ];
+            
+            $updateUser = [
+                'email' => $request->email,
+                'username' => $request->username
+            ];
+            
+            try {
+                DB::transaction(function () use ($id_profil, $request, $updateProfil, $updateUser) {
+                    // Update Profil dan User
                     Profil::where('id_profil', $id_profil)->update($updateProfil);
-
                     User::where('id_profil', $id_profil)->update($updateUser);
-        
-                    return response()->json([
-                        'icon' => "success",
-                        'text' => "Berhasil Update Data",
-                        'title' => "Berhasil",
-                        'stats' => "berhasil"
-                    ]);
-                } else {
-
-                    return response()->json([
-                        'icon' => "error",
-                        'text' => "Terjadi Kegagalan",
-                        'title' => "Gagal",
-                        'stats' => "gagal"
-                    ]);
-                }
-            } else {
-                $path = $request->file('image')->store('/img/foto','public');
-
-                    try{
-                        DB::transaction(function() use ($id_profil,$request) {
-
-                            $updateProfil = [
-                                'nama' => $request->nama,
-                                'alamat' => $request->alamat,
-                                'no_hp' => $request->no_hp,
-                                'foto' => $path,
-                            ];
-        
-                            $updateUser = [
-                                'email' => $request->email,
-                                'username' => $request->username
-                            ];
-        
-                            Profil::where('id_profil', $id_profil)->update($updateProfil);
-        
-                            User::where('id_profil', $id_profil)->update($updateUser);
-                        });
-
-                
-                        return response()->json([
-                            'icon' => "success",
-                            'text' => "Berhasil Update Data",
-                            'title' => "Berhasil",
-                            'stats' => "berhasil"
-                        ]);
-                    }catch(\Exception $e){
-        
-                        return response()->json([
-                            'icon' => "error",
-                            'text' => "Terjadi Kegagalan",
-                            'title' => "Gagal",
-                            'stats' => "gagal"
-                        ]);
-                    };  
+                });
+            
+                return response()->json([
+                    'icon' => "success",
+                    'text' => "Berhasil Update Data",
+                    'title' => "Berhasil",
+                    'stats' => "berhasil"
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'icon' => "error",
+                    'text' => "Terjadi Kegagalan",
+                    'title' => "Gagal",
+                    'stats' => "gagal"
+                ]);
             }
         } else {
             $validator = Validator::make($request->all(),[
