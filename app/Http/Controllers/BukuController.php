@@ -175,8 +175,8 @@ class BukuController extends Controller
         $buku = Buku::where('id_buku',$id)->first();
         if(Storage::disk('public')->exists($buku->cover)){
             Storage::disk('public')->delete($buku->cover);
-            Buku::where('id_buku',$id)->delete();
         }
+        Buku::where('id_buku',$id)->delete();
         return redirect()->route('buku');
     }
 }

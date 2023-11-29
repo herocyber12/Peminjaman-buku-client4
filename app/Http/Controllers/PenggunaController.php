@@ -29,7 +29,6 @@ class PenggunaController extends Controller
             $data = Profil::where('id_profil',$id)->first();
             if(is_null($data->foto)){
                 $path = $request->file('image')->store('/img/foto','public');
-                $path = $request->file('image')->store('/img/foto','public');
 
                 $data = [
                     'foto' => $path,

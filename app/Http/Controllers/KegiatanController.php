@@ -48,6 +48,10 @@ class KegiatanController extends Controller
                 $text = "Gagal Upload Kegiatan";
                 $icon = "error";
             }
+        } else {
+            $title = "Gagal";
+            $text = "Gambar bukanlah sebuah file";
+            $icon = "error";
         }
 
         return response()->json([

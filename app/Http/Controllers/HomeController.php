@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // $totalpeminjam = Buku::sum('totalpeminjaman');
+        $totalpeminjam = Reservasi::count();
         $sumpinjam = Buku::where('status_buku','Dipinjam')->count();
         $sumtersedia = Buku::where('status_buku', 'Tersedia')->count();
         $pelanggan = Reservasi::select('profil.nama')
@@ -24,7 +24,7 @@ class HomeController extends Controller
 
         return view('dashboard.index',[
             'nama' => $pelanggan,
-            // 'totalpeminjam' => $totalpeminjam,
+            'totalpeminjam' => $totalpeminjam,
             'sumpinjam' =>$sumpinjam,
             'sumtersedia' => $sumtersedia,
             // 'chartData' => $chartData,
