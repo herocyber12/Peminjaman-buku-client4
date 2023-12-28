@@ -3,9 +3,6 @@
 <!-- Page Heading -->
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Daftar Reservasi</h1>
-    <div class="d-flex">
-        <a href="#" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
-    </div>
 	</div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -43,10 +40,8 @@
                     <tbody class="text-center">
                         @php($no=1)
                         @foreach($data as $a)
-                        @if($a->status_reservasi === "Masih Dipinjam")
+                        @if($a->status_reservasi === "Sudah Di Kembalikan")
                             {{$bg = "success";}}
-                        @elseif($a->status_reservasi === "Sudah Di Kembalikan")
-                            {{$bg = "danger";}}
                         @else 
                             {{$bg = "warning";}}
                         @endif
@@ -57,20 +52,47 @@
 							<td class="align-middle">{{$a->nama_buku}}</td>
 							<td class="align-middle">{{isset($a->tanggal_dipinjam) ? $a->tanggal_dipinjam: "-"}}</td>
 							<td class="align-middle">{{isset($a->tanggal_dikembalikan)?$a->tanggal_dikembalikan:"-" }}</td>
-							<td class="align-middle"><span class="bg-{{$bg}} text-white p-2" style="border-radius: 7px; ">{{$a->status_reservasi}}</span></td>
 							<td class="align-middle">
-                                <input type="hidden" id="id_reservasi" value="{{$a->id_reservasi}}">
+                                @if($a->status_reservasi === "Masih Dipinjam")
+                                <form action="{{route('reservasi.ubah')}}" method="POST">
+                                @csrf
+                                    <input type="hidden" name="id" value="{{$a->id_reservasi}}">
+                                    <button type="submit" name="masih_dipinjam" class="btn btn-danger">{{$a->status_reservasi}}</button>
+                                </form>
+                                @else
+                                <span class="bg-{{$bg}} text-white p-2" style="border-radius: 7px; ">{{$a->status_reservasi}}</span>
+                                @endif
+                            
+                            </td>
+							<td class="align-middle">
+                                <input type="hidden" class="id_reservasi" value="{{$a->id_reservasi}}">
                                 @if($a->status_peminjaman === "Disetujui" )
                                     <button class="btn btn-success btn-sm" disabled><i class="fa fa-check"></i> Setuju</button>
                                 @elseif($a->status_peminjaman === "Tidak Di Setujui")
-								    <button class="btn btn-warning btn-sm" disabled><i class="fa fa-times"></i> Tolak</button>
-
+                                    <button class="btn btn-warning btn-sm" disabled><i class="fa fa-times"></i> Tolak</button>
                                 @else
-                                    <button type="button" class="btn btn-success btn-sm btn-reservasi" value="setuju"><i class="fa fa-check"></i> Setuju</button>
-								    <button type="button" class="btn btn-warning btn-sm btn-reservasi" value="tolak"><i class="fa fa-times"></i> Tolak</button>
+                                    <button type="button" class="btn btn-success btn-sm btn-reservasi" value="setuju" data-toggle="modal" data-target="#konfirmasiModal"><i class="fa fa-check"></i> Setuju</button>
+                                    <button type="button" class="btn btn-warning btn-sm btn-reservasi" value="tolak" data-toggle="modal" data-target="#konfirmasiModal"><i class="fa fa-times"></i> Tolak</button>
                                 @endif
-								    <button type="button" class="btn btn-danger btn-sm btn-reservasi" value="hapus"><i class="fa fa-trash"></i> Hapus</button>
-							</td>
+                                <button type="button" class="btn btn-danger btn-sm btn-reservasi" value="hapus" data-toggle="modal" data-target="#konfirmasiModal"><i class="fa fa-trash"></i> Hapus</button>
+
+                                <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog" aria-labelledby="konfirmasiModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="konfirmasiModalLabel" data-title="Yakin hapus data ini ?">Yakin hapus data ini ?</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body"> <!-- Pindahkan ke sini -->
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                                                <button type="button" class="btn btn-success" id="konfirmasiButton" data-text="Hapus">Hapus</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
 						</tr>
                         @endforeach
 					</tbody>

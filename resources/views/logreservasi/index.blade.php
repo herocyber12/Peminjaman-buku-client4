@@ -4,7 +4,7 @@
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Riwayat Reservasi</h1>
     <div class="d-flex">
-        <a href="#" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
+        <a href="{{url('exportreservasi')}}" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
     </div>
 	</div>
     <!-- DataTales Example -->

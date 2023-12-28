@@ -5,7 +5,7 @@
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Pengguna</h1>
     <div class="d-flex">
-        <a href="#" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
+        <a href="{{url('exportprofil')}}" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
     </div>
 </div>
 <!-- DataTales Example -->
@@ -52,7 +52,7 @@
 					          <td class="align-middle">{!! QrCode::size(100)->generate(route('info.profil',encrypt($a->id_profil))) !!}</td>
 					          <td class="align-middle">
 					          	<!-- <button class="btn btn-info btn-sm"><i class="fa fa-eye"></i> View</button> -->
-					          	<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_profil}}"><i class="fa fa-wrench"></i> Edit</button>
+					          	<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_profil}}"><i class="fa fa-wrench"></i> Ubah</button>
 					          	<a href="{{route('pengguna.hapus',$a->id_profil)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</a>
 					          </td>
 				          </tr>
@@ -61,7 +61,7 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalLabel">Form Edit</h5>
+                          <h5 class="modal-title" id="exampleModalLabel">Form Ubah Data</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>

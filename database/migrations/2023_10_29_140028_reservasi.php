@@ -19,8 +19,8 @@ return new class extends Migration
             $table->date('tanggal_dikembalikan')->nullable();
             $table->enum('status_reservasi',['Masih Dipinjam','Sudah Dikembalikan','Pengajuan Peminjaman']);
             $table->enum('status_peminjaman',['Disetujui','Belum Disetujui','Tidak Di Setujui']);
-            $table->string('id_profil',15);
-            $table->string('id_buku',15);
+            $table->string('id_profil',15)->unique();
+            $table->string('id_buku',15)->unique();
             $table->timestamps();
         });
     }

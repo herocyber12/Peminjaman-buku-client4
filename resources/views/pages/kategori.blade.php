@@ -51,10 +51,14 @@
                                         <?php
                                     }
                                 }
-                                if (!$booksInCategory) {
-                                    echo "<p>Belum ada buku pada kategori ini</p>";
-                                }
                                 ?>
+                                @if (!$booksInCategory)
+                                    <div class="col-lg-12 col-md-6 col-sm-6 mb-5 pb-5 col-xl-12 card">
+                                        <div class="card-body">
+                                            <span class="mt-5"><center>Belum ada Buku</center></span>
+                                        </div>
+                                    </div>
+                                @endif
                             </div>
                         @endforeach
                     </div>

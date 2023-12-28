@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use App\Models\Kategori;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 use Illuminate\Support\Facades\Storage;
 
@@ -24,23 +26,40 @@ class BukuController extends Controller
 
     public function simpan(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(),[
             'image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-            'nama_buku' => 'required|string',
-            'penerbit' => 'required|string',
+            'nama_buku' => 'required',
+            'penerbit' => 'required',
             'penulis' => 'required|string',
             'tahun_terbit' => 'required|numeric',
             'kategori' => 'required',
             'sinopsis' => 'required',
+            'rak_buku' => 'required',
+        ],[
+            'required' => 'Form harus diiisi semua',
+            'image.mimes' => 'Foto harus format jpeg, png, jpg',
+            'image.max' => 'Foto harus berukuran kurang dari 2MB',
+            'nama_buku.required' => 'Form Harus Diisi',
+            'penulis.string' => 'Harus berupa huruf',
+            'tahun_terbut.numeric' => 'harus berupa angka',
         ]);
+    
+        if($validator->fails()){
+            return response()->json([
+                'act' => 'Gagal',
+                'message' => "Silahkan cek kembali formnya dan gambar harus dibawah 2mb",
+                'header' => 'error'
+            ]);
+        }
 
         $t = mt_rand(0000,9999);
         $idbuku = "ID-B".$t;
         
         
         if( $request->hasFile('image')){
-           
-            $path = $request->file('image')->store('/img/cover','public');
+
+            $path = $request->file('image')->store('img/cover','public');
+            
         } else {
             return back();
         }
@@ -53,6 +72,7 @@ class BukuController extends Controller
             'penerbit' => $request->penerbit,
             'penulis' => $request->penulis,
             'tahun_terbit' => $request->tahun_terbit,
+            'rak' => $request->rak_buku,
             'status_buku' => 'Tersedia',
             'id_kategori' => $request->kategori,
             'totalpeminjaman' => 0
@@ -97,7 +117,9 @@ class BukuController extends Controller
                 $oldCover = Storage::disk('public')->delete($data->cover);
                 if($oldCover){
                     if($request->hasFile('image')){
-                        $path = $request->file('image')->store('/img/cover','public');
+                        
+                        $path = $request->file('image')->store('img/cover','public');
+
                         $update = [
                             'cover' => $path,
                             'sinopsis' => $request->input('sinopsisEdit'),
@@ -105,7 +127,8 @@ class BukuController extends Controller
                             'penerbit' => $request->penerbit,
                             'penulis' => $request->penulis,
                             'tahun_terbit' => $request->tahun_terbit,
-                            'id_kategori' => $request->kategori
+                            'id_kategori' => $request->kategori,
+                            'rak' => $request->rak_buku
                         ];
     
                         $doUpdate = Buku::where('id_buku',$id)->update($update);
@@ -149,7 +172,8 @@ class BukuController extends Controller
                 'penerbit' => $request->penerbit,
                 'penulis' => $request->penulis,
                 'tahun_terbit' => $request->tahun_terbit,
-                'id_kategori' => $request->kategori
+                'id_kategori' => $request->kategori,
+                'rak' => $request->rak_buku
             ];
             $doUpdate = $where->update($update);
             if($doUpdate){

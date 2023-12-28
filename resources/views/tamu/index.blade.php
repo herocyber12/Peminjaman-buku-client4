@@ -4,7 +4,7 @@
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Tamu</h1>
     <div class="d-flex">
-        <a href="#" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
+        <a href="{{url('exporttamu')}}" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
     </div>
 	</div>
     <!-- DataTales Example -->
@@ -20,6 +20,7 @@
                             <th>#</th>
 							<th>Nama</th>
                             <th>Asal</th>
+                            <th>Tujuan</th>
                             <th>Waktu</th> 
                         </tr>
                     </thead>
@@ -28,6 +29,7 @@
                             <th>#</th>
 							<th>Nama</th>
                             <th>Asal</th>
+                            <th>Tujuan</th>
                             <th>Waktu</th> 
                         </tr>
                     </tfoot>
@@ -38,6 +40,7 @@
                             <td>{{$no++}}</td>
 							<td class="align-middle">{{$a->nama}}</td>
 							<td class="align-middle">{{$a->asal}}</td>
+							<td class="align-middle">{{$a->tujuan}}</td>
 							<td class="align-middle">{{$a->created_at}}</td>
 							
 						</tr>

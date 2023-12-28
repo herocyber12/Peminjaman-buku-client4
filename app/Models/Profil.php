@@ -14,7 +14,6 @@ class Profil extends Model
         'nama',
         'alamat',
         'no_hp',
-        'qrcode',
         'level',
         'foto',
     ];

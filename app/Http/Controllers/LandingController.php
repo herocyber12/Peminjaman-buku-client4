@@ -95,39 +95,48 @@ class LandingController extends Controller
 
     public function pinjam(Request $request)
     {
-        $id = $request->id_buku;
-        $b = Buku::where('id_buku',$id);
-        $i = mt_rand(0000,9999);
-        $idr = "ID-R".$i;
+        if(auth()->user()){
 
-        $data = [
-            'id_reservasi' => $idr,
-            'status_reservasi' => 'Pengajuan Peminjaman',
-            'status_peminjaman' => 'Belum Disetujui',
-            'id_profil' => auth()->user()->id_profil,
-            'id_buku' => $id
-        ];
-        
-        $reservasi = Reservasi::create($data);
-
-        if($reservasi){
+            $row = Profil::where('id_profil',auth()->user()->id_profil)->first();
+            if($row->level === "Admin"){
+                return back()->withErrors(['message' => 'Admin tidak bisa melakukan peminjaman buku']);
+            }
             
-        $status_buku = [
-            'status_buku' => 'Dipinjam'
-        ];
-        $buku = $b->update($status_buku);
-        $no_hp = Profil::where('id_profil',auth()->user()->id_profil)->first();
-        $namabuku = $b->first();
-
-        Http::withHeaders([
-            'Authorization'=> 'j@LzeHaXb4bhIctMhNqu', // API KODE disini
-        ])->post('https://api.fonnte.com/send',[
-            'target' =>'081542355622', 
-            'message' => 'Atas Nama '. $no_hp->nama.' melakukan peminjaman buku yang berjudul "'. $namabuku->nama_buku .'" silahkan konfirmasi permintaan halaman admin' ,
-            'countryCode' => '+62',
-        ]);
-
-            return back();
+            $id = $request->id_buku;
+            $b = Buku::where('id_buku',$id);
+            $i = mt_rand(0000,9999);
+            $idr = "ID-R".$i;
+    
+            $data = [
+                'id_reservasi' => $idr,
+                'status_reservasi' => 'Pengajuan Peminjaman',
+                'status_peminjaman' => 'Belum Disetujui',
+                'id_profil' => auth()->user()->id_profil,
+                'id_buku' => $id
+            ];
+            
+            $reservasi = Reservasi::create($data);
+    
+            if($reservasi){
+                
+            $status_buku = [
+                'status_buku' => 'Dipinjam'
+            ];
+            $buku = $b->update($status_buku);
+            $namabuku = $b->first();
+    
+            Http::withHeaders([
+                'Authorization'=> 'j@LzeHaXb4bhIctMhNqu', // TOKEN API KODE disini
+            ])->post('https://api.fonnte.com/send',[
+                'target' =>'081542355622', 
+                'message' => 'Atas Nama '. $row->nama.' melakukan peminjaman buku yang berjudul "'. $namabuku->nama_buku .'" silahkan konfirmasi permintaan halaman admin' ,
+                'countryCode' => '+62',
+            ]);
+    
+                return back();
+            }
+        } else {
+            return redirect()->route('login');
         }
     
     }
@@ -179,6 +188,7 @@ class LandingController extends Controller
         $data = [
             'nama' => $request->nama,
             'asal' => $request->asal,
+            'tujuan' => $request->tujuan
         ];
 
         $result = Tamu::create($data);

@@ -19,6 +19,7 @@ class Buku extends Model
         'tahun_terbit',
         'status_buku',
         'id_kategori',
+        'rak',
         'totalpeminjaman'
     ];
 }

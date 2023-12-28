@@ -35,7 +35,7 @@
 					<tbody>
                         @foreach($data as $a)
                         <tr>
-                            <td><img src="{{asset('storage/'.$a->cover)}}" class="img-fluid" style="max-width:100%;max-height:100%;"></td>
+                            <td><img src="{{asset('storage/'.$a->cover)}}" class="" height="150px" style="max-width:100%;max-height:100%;"></td>
                             <td>{{$a->nama_buku}}</td>
                             <td>{{isset($a->tgl_dipinjam)?$a->tgl_dipinjam:"Belum disetujui"}}</td>
                             <td>{{isset($a->tgl_dikembalikan)?$a->tgl_dikembalikan:"Belum disetujui"}}</td>

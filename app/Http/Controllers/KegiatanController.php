@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Kegiatan;
 use Illuminate\Support\Facades\Validator;
 
+use Illuminate\Support\Facades\Storage;
+
 class KegiatanController extends Controller
 {
     public function index()
@@ -59,5 +61,18 @@ class KegiatanController extends Controller
             'text' => $text,
             'title' => $title
         ]);
+    }
+
+    public function hapus($id)
+    {
+        $data = Kegiatan::where('id',$id)->first();
+
+        if(Storage::disk('public')->exists($data->banner)){
+            Storage::disk('public')->delete($data->banner);
+        }
+
+        Kegiatan::where('id',$id)->delete();
+
+        return back();
     }
 }

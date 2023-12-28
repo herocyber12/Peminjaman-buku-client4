@@ -17,6 +17,7 @@
         <form>
             <input type="text" name="nama" class="form-control mb-3" id="namaTamu" placeholder="Masukan Nama Anda">
             <input type="text" name="asal" class="form-control mb-3" id="asalTamu" placeholder="Masukan Asal Anda, Contoh : SDN 3 Contoh Kelas 3">
+            <input type="text" name="tujuan" class="form-control mb-3" id="tujuanTamu" placeholder="Masukan Tujuan Anda Mengunjungi situs ini">
             <button type="button" class="btn btn-success col-12 btn-sm d-block" id="absen">Lanjut Pinjam Buku</button>
         </form>
         <hr>
@@ -37,10 +38,12 @@
 </div>
 @endif 
 <!-- Hero Section Begin -->
-<section class="hero">
+    <section class="hero">
         <div class="container">
             <div class="hero__slider owl-carousel">
+                @php($kegiatanbanner=false)
                 @foreach($kegiatan as $i)
+                <?php $kegiatanbanner=true; ?>
                 <div class="hero__items set-bg img-fluid" data-setbg="{{asset('storage/'.$i->banner)}}">
                     <div class="row">
                         <div class="col-lg-6">
@@ -51,6 +54,18 @@
                     </div>
                 </div>
                 @endforeach
+                
+                @if(!$kegiatanbanner)
+                <div class="hero__items set-bg img-fluid" data-setbg="{{asset('img/hero/hero-1.jpg')}}">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="hero__text">
+                                <h2>Belum ada kegiatan</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </section>
@@ -75,12 +90,16 @@
                             </div>
                         </div>
                         <div class="row mb-5 pb-5">
-                            @foreach($data as $a)
-                            @if($a->status_buku ==="Tersedia")
-
-                                <div class="col-lg-4 col-md-6 col-sm-6 mb-5 pb-5 col-xl-3 card">
-                                    <div class="card-body shadow">
-                                        <div class="product__item"  style="width: 230px; height: 325px;">
+                            <?php
+                            $booktersedia = false;
+                            foreach($data as $a){
+                            if($a->status_buku ==="Tersedia"){
+                                $booktersedia = true; 
+                            ?>
+                                <div class="col-lg-3 col-md-6 col-sm-6 mb-5 pb-5 col-xl-2 mr-3 card shadow">
+                                <a href="{{url('detail-buku', $a->id_buku)}}">
+                                    <div>
+                                        <div class="product__item" style="width: 163px; height: 265px;">
                                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
                                                 <div class="st bg-success">{{$a->status_buku}}</div>
                                                     <div class="comment"><i class="fa fa-comments"></i> {{$ulasanPerBuku[$a->id_buku]}}</div>
@@ -90,14 +109,26 @@
                                                     <ul>
                                                         <li>{{$a->id_kategori}}</li>
                                                     </ul>
-                                                    <h5><a href="{{url('detail-buku', $a->id_buku   )}}">{{$a->nama_buku}}</a></h5>
+                                                    <h5>{{$a->nama_buku}}</h5>
                                                 </div>
                                             </div>    
                                         </div>
                                     </div>
+                                    </a>
+                            <?php 
+
+                                }
+                            }
+
+                            ?>
+
+                            @if(!$booktersedia)
+                                <div class="col-lg-12 col-md-6 col-sm-6 mb-5 pb-5 col-xl-12 card shadow">
+                                    <div class="card-body">
+                                        <span class="mt-5"><center>Belum ada Buku</center></span>
+                                    </div>
                                 </div>
                             @endif
-                            @endforeach
                         </div>
                     </div>
                     <div class="popular__product">
@@ -114,33 +145,49 @@
                             </div>
                         </div>
                         <div class="row mb-5 pb-5">
-                        @foreach($data as $a)
-                            @if($a->status_buku ==="Dipinjam")
-                                <div class="col-lg-4 col-md-6 col-sm-6 mb-5 pb-5 col-xl-3 card shadow">
-                                    <div class="card-body">
-                                        <div class="product__item"  style="width: 230px; height: 325px;">
+                        <?php
+                        $booktidaktersedia=false;
+                        foreach($data as $a){
+                            if($a->status_buku ==="Dipinjam"){
+                            $booktidaktersedia=true; 
+                            
+                            ?>
+                                <div class="col-lg-3 col-md-6 col-sm-6 mb-5 pb-5 col-xl-2 mr-3 card shadow">
+                                <a href="{{url('detail-buku', $a->id_buku)}}">
+                                    <div>
+                                        <div class="product__item" style="width: 163px; height: 265px;">
                                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
                                                 <div class="st bg-danger">{{$a->status_buku}}</div>
-                                                <div class="comment"><i class="fa fa-comments"></i> {{ $ulasanPerBuku[$a->id_buku]}}</div>
-                                                <div class="view"><i class="fa fa-book"></i> {{$a->totalpeminjaman}}</div>
-                                            </div>
-                                            <div class="product__item__text">
-                                                <ul>
-                                                    <li>{{$a->id_kategori}}</li>
-                                                </ul>
-                                                <h5><a href="{{url('detail-buku', $a->id_buku   )}}">{{$a->nama_buku}}</a></h5>
-                                            </div>
+                                                    <div class="comment"><i class="fa fa-comments"></i> {{$ulasanPerBuku[$a->id_buku]}}</div>
+                                                    <div class="view"><i class="fa fa-book"></i> {{$a->totalpeminjaman}}</div>
+                                                </div>
+                                                <div class="product__item__text">
+                                                    <ul>
+                                                        <li>{{$a->id_kategori}}</li>
+                                                    </ul>
+                                                    <h5>{{$a->nama_buku}}</h5>
+                                                </div>
+                                            </div>    
                                         </div>
+                                    </div>
+                                    </a>
+                                <?php 
+                            }
+                        }
+                                ?>
+                        
+                        @if(!$booktidaktersedia)
+                                <div class="col-lg-12 col-md-6 col-sm-6 mb-5 pb-5 col-xl-12 card shadow">
+                                    <div class="card-body">
+                                        <span class="mt-5"><center>Belum ada Buku</center></span>
                                     </div>
                                 </div>
                             @endif
-                        @endforeach
                         </div>
                     </div>
                 </div>
-                
-</div>
-</div>
-</section>
+            </div>
+        </div>
+    </section>
 <!-- Product Section End -->
 @endsection

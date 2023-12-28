@@ -3,17 +3,21 @@
     <!-- Anime Section Begin -->
     <section class="anime-details spad">
         <div class="container">
-            
+        @if($errors->has('message'))
+            <div class="alert alert-danger">
+                {{ $errors->first('message') }}
+            </div>
+        @endif
             <div class="anime__details__content">
                 <div class="row">
                     @foreach($data as $a)
-                    <div class="col-lg-3">
+                    <div class="col-lg-4">
                         <div class="card card-body shadow">
                             <div class="anime__details__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-9">
+                    <div class="col-lg-8">
                         <div class="card card-body shadow">
                             
                         <div class="anime__details__text">
@@ -26,10 +30,10 @@
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
-                                            <li><span>Kategori:</span> {{$a->kategori}}</li>
+                                            <li><span>Kategori:</span> {{$a->id_kategori}}</li>
                                             <li><span>Penerbit:</span> {{$a->penerbit}}</li>
                                             <li><span>Tahun Terbit:</span> {{$a->tahun_terbit}}</li>
-                                            <li><span>Rak:</span> 1.E.02</li>
+                                            <li><span>Rak:</span> {{$a->rak}}</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -47,13 +51,25 @@
                                 <form action="{{route('pengajuan')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id_buku" value="{{$a->id_buku}}">
-                                    <button type="submit" class="btn follow-btn" {{$disabled}}><span>Pinjam</span></button>
+                                    <button type="button" class="btn follow-btn" data-toggle="modal" data-target="#pinjamBtn" {{$disabled}}><span>Pinjam</span></button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="pinjamBtn" tabindex="-1" role="dialog" aria-labelledby="pinjamBtnLabel" aria-hidden="true">
+                                      <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h5 class="modal-title" id="pinjamBtnLabel">Yakin mau Pinjam ?</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Pinjam!</button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
                                 </form>
-                                
-                                <!--Akan Muncul Jika buku sedang dipinjam oleh pengguna -->
-								<!-- <a href="#" class="watch-btn"><span>Perpanjang</span><i -->
-                                    <!-- class="fa fa-angle-right"></i></a> -->
-								<!-- ******************************************************* -->
                                 </div>
                             </div>
                         </div>
@@ -112,7 +128,7 @@
                             </div>
                             @foreach($random as $d)
                             <div class="product__sidebar__view__item set-bg" data-setbg="{{asset('storage/'.$d->cover)}}">
-                                <h5><a href="{{route('detail-buku',$d->id_buku)}}" class="text-primary">{{$d->nama_buku}}</a></h5>
+                                <h5><a href="{{route('detail-buku',$d->id_buku)}}">{{$d->nama_buku}}</a></h5>
                             </div>
                             @endforeach
                         </div>

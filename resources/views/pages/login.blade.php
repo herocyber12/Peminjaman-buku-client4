@@ -34,7 +34,7 @@
                             </div>
                             <button type="submit" class="site-btn">Masuk Sekarang</button>
                         </form>
-                        <a href="#" class="forget_pass">Lupa Kata sandi?</a>
+                        <!-- <a href="#" class="forget_pass">Lupa Kata sandi?</a> -->
                     </div>
                 </div>
                 <div class="col-lg-6">

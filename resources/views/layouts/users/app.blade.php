@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="google-signin-client_id" content="328098397708-rc589apqeivagiq52o8pnm3gtov7kief.apps.googleusercontent.com.apps.googleusercontent.com">
-    <meta name="description" content="Perpustakaan Widaya Kusuma">
-    <meta name="keywords" content="education,public,html">
+    <meta name="description" content="Selamat datang di Perpustakaan Widaya Kusuma, tempat peminjaman buku terbaik untuk mengeksplorasi pengetahuan. Nikmati koleksi buku yang kaya dan beragam. Bergabunglah dengan komunitas membaca kami!">
+    <meta name="keywords" content="Peminjaman Buku, Perpustakaan Widaya Kusuma, Literasi dan Pendidikan, Koleksi Buku Terbaru, Komunitas Membaca, Sumber Bacaan Berkualitas, Pengetahuan dan Pembelajaran, Bacaan untuk Semua Usia, Katalog Buku Online, Pengembangan Diri melalui Buku">
+    <meta name="author" content="oneprocyber.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Perpustakaan Widaya Kusuma</title>
@@ -27,6 +28,16 @@
 	<link href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
     
     <style>
+    @font-face {
+    	font-family: 'ElegantIcons';
+    	src:url('https://democl4.oneprocyber.com/public/fonts/ElegantIcons.eot');
+    	src:url('https://democl4.oneprocyber.com/public/fonts/ElegantIcons.eot?#iefix') format('embedded-opentype'),
+    		url('https://democl4.oneprocyber.com/public/fonts/ElegantIcons.woff') format('woff'),
+    		url('https://democl4.oneprocyber.com/public/fonts/ElegantIcons.ttf') format('truetype'),
+    		url('https://democl4.oneprocyber.com/public/fonts/ElegantIcons.svg#ElegantIcons') format('svg');
+    	font-weight: normal;
+    	font-style: normal;
+    }
     	.image-container {
             display: flex;
             flex-direction: column;
@@ -76,17 +87,6 @@
     <!-- Footer Section Begin -->
     @include('layouts.users.footer')
     <!-- Footer Section End -->
-
-  <!-- Search model Begin -->
-  <div class="search-model">
-    <div class="h-100 d-flex align-items-center justify-content-center">
-        <div class="search-close-switch"><i class="icon_close"></i></div>
-        <form class="search-model-form">
-            <input type="text" id="search-input" placeholder="Search here.....">
-        </form>
-    </div>
-</div>
-<!-- Search model end -->
 
 <!-- Js Plugins -->
 <script src="{{asset('js/landing/jquery-3.3.1.min.js')}}"></script>
@@ -167,10 +167,12 @@
         $('#absen').on('click',function(){
             var namaTamu = $('#namaTamu').val();
             var asalTamu = $('#asalTamu').val();
+            var tujuanTamu = $('#tujuanTamu').val();
             var data = {
                 _token : "{{csrf_token()}}",
                 nama:namaTamu,
-                asal:asalTamu
+                asal:asalTamu,
+                tujuan:tujuanTamu
             }
             $.ajax({
                 url: urlTamu,
@@ -180,6 +182,7 @@
                     if(e.stats === "Berhasil")
                     {
                         alert('Silahkan Lanjut Mengunjungi Perpustakaan Widya Kusuma');
+                        $('#landingTamu').modal('hide');
                     }
                 }
                 

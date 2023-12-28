@@ -17,7 +17,6 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard/sb-admin-2.min.css')}}" rel="stylesheet">
     <style>
@@ -187,7 +186,7 @@
         $bukuEdit = route('buku.update',['id'=>':id']);
         $kategoriSimpan = route('kategori.simpan');
         $penggunaEdit = route('pengguna.update',['id'=>':id']);
-        $reservasi = route('reservasi.update',['id'=>':id']);
+        $reservasi = route('reservasi.update');
         $profil = route('udpate.profil');
         $l = route('kegiatan.simpan');
     ?>
@@ -324,6 +323,7 @@
                     formData.append('penerbit', $('#penerbit').val());
                     formData.append('penulis', $('#penulis').val());
                     formData.append('tahun_terbit', $('#tahun_terbit').val());
+                    formData.append('rak_buku', $('#rak_buku').val());
                     formData.append('kategori', $('#kategori').val());
                     formData.append('sinopsis', sinopsis.getData());
                     formData.append('_token', "{{ csrf_token() }}");
@@ -352,7 +352,8 @@
                     }                    
                 });
             });
-            var urlHapus = "{{route('buku.hapus',['id'=>':id'])}}"
+            var urlHapus = "{{route('buku.hapus',['id'=>':id'])}}";
+            
             $('#editBuku').on('click',function(){
                 var id_buku = $('#id_buku').val();
                 var fileupload = $('#gambarInputEdit')[0].files;
@@ -365,6 +366,7 @@
                     formData.append('penerbit', $('#penerbitEdit').val());
                     formData.append('penulis', $('#penulisEdit').val());
                     formData.append('tahun_terbit', $('#tahun_terbitEdit').val());
+                    formData.append('rak_buku', $('#rak_bukuEdit').val());
                     formData.append('kategori', $('#kategoriEdit').val());
                     formData.append('sinopsisEdit', sinopsis2.getData());
                     formData.append('_token', "{{ csrf_token() }}");
@@ -481,31 +483,68 @@
                 });
             });
 
-            $('.btn-reservasi').on('click',function(){
+            $('.btn-reservasi').on('click', function () {
                 var tombol = $(this).val();
-                var id = $('#id_reservasi').val();
-                var urlFinal = urlReservasi.replace(':id',id);
+                var id = $(this).closest('tr').find('.id_reservasi').val();
+
+                // Simpan teks asli elemen <h5> ke dalam atribut data-title
+                $('#konfirmasiModalLabel').data('title', 'Yakin hapus data ini ?');
+                $('#konfirmasiButton').data('text', 'Hapus').data('id', id).data('tombol', tombol);
+                $('#konfirmasiButton').removeClass('btn-success btn-warning btn-danger');
+
+                if (tombol === 'setuju') {
+                    // Jika tombol Setuju di-klik, ubah teks elemen <h5>
+                    $('#konfirmasiModalLabel').text('Yakin ingin menyetujui data ini ?');
+                    $('#konfirmasiButton').text('Setuju');
+
+                    $('#konfirmasiButton').addClass('btn-success');
+                } else if (tombol === 'tolak') {
+                    // Jika tombol Tolak di-klik, ubah teks elemen <h5>
+                    $('#konfirmasiModalLabel').text('Yakin ingin menolak data ini ?');
+                    $('#konfirmasiButton').text('Tolak');
+                    $('#konfirmasiButton').addClass('btn-warning');
+                } else if (tombol === 'hapus') {
+                    // Jika tombol Hapus di-klik, ubah teks elemen <h5>
+                    $('#konfirmasiModalLabel').text('Yakin ingin menghapus data ini ?');
+                    $('#konfirmasiButton').text('Hapus');
+                    $('#konfirmasiButton').addClass('btn-danger');
+                } else {
+                    // Jika tombol lain di-klik, kembalikan teks elemen <h5> ke teks asli
+                    $('#konfirmasiModalLabel').text($('#konfirmasiModalLabel').data('title'));
+                    
+                    $('#konfirmasiButton').text('Hapus');
+                    $('#konfirmasiButton').addClass('btn-danger');
+                }
+            });
+        
+            // Tambahkan event listener untuk tombol Hapus di modal
+            $('#konfirmasiButton').on('click', function () {
+                var id = $(this).data('id');
+                var tombol = $(this).data('tombol');
+                // Lakukan penghapusan menggunakan AJAX di sini
                 $.ajax({
-                    url: urlFinal,
-                    type:'POST',
-                    data:{
+                    url: urlReservasi,
+                    type: 'POST',
+                    data: {
                         _token: "{{ csrf_token() }}",
-                        tombol:tombol,
-                        id:id
+                        tombol: tombol,
+                        id: id
                     },
-                    success:function(e){
-                        var title =e.header;
-                        var text =e.text;
-                        var icon =e.icon;
+                    success: function (e) {
+                        var title = e.header;
+                        var text = e.text;
+                        var icon = e.icon;
                         Swal.fire({
-                            title:title,
-                            text:text,
-                            icon:icon
+                            title: title,
+                            text: text,
+                            icon: icon
                         }).then(() => {
                             location.reload();
                         });
                     }
-                })
+                });
+                // Sembunyikan modal setelah penghapusan
+                $('#konfirmasiModal').modal('hide');
             });
 
             var isEditable = false;

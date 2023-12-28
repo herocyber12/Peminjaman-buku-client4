@@ -17,7 +17,7 @@ class ReservasiTable extends Seeder
     {
         DB::table('reservasi')->delete();
 
-        DB::table('reservasi')->insert([
+        DB::table('reservasi')->insert([[
             'id_reservasi' => 'ID-R5632D',
             'tanggal_dipinjam' => '2023-09-23',
             'tanggal_dikembalikan' => '2023-09-26',
@@ -25,6 +25,14 @@ class ReservasiTable extends Seeder
             'status_peminjaman' => 'Belum Disetujui',
             'id_profil'=> 'ID-P4235D',
             'id_buku' => 'ID-B4565K'
-        ]);
+        ],[
+            'id_reservasi' => 'ID-R7812H',
+            'tanggal_dipinjam' => '2023-09-24',
+            'tanggal_dikembalikan' => '2023-09-27',
+            'status_reservasi' => 'Pengajuan Peminjaman',
+            'status_peminjaman' => 'Disetujui',
+            'id_profil'=> 'ID-P4235D',
+            'id_buku' => 'ID-B4565K'
+        ]]);
     }
 }

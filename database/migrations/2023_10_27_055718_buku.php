@@ -23,6 +23,7 @@ return new class extends Migration
             $table->mediumInteger('tahun_terbit');
             $table->enum('status_buku',['Tersedia','Dipinjam','Rusak']);
             $table->string('id_kategori',25);
+            $table->string('rak',70);
             $table->integer('totalpeminjaman');
 
             $table->timestamps();

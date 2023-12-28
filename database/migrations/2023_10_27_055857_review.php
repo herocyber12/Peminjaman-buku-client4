@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('review', function(Blueprint $table){
             $table->string('id_review',15)->primary();
             $table->text('komentar')->nullable();
-            $table->string('id_profil',15);
-            $table->string('id_buku',15);
+            $table->string('id_profil',15)->unique();
+            $table->string('id_buku',15)->unique();
             
             $table->timestamps();
         });

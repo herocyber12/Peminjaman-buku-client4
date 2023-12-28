@@ -9,5 +9,5 @@ class Tamu extends Model
 {
     use HasFactory;
     protected $table = 'tamu';
-    protected $fillable = ['nama','asal'];
+    protected $fillable = ['nama','asal','tujuan'];
 }

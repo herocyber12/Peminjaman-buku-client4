@@ -79,6 +79,11 @@ class AuthController extends Controller
             ]);
     
             if($validator->fails()){
+                // return response()->json([
+                //     'act' => 'Gagal',
+                //     'message' => $validator,
+                //     'header' => 'error'
+                // ]);
                 return back()->withErrors($validator)->withInput();
             }
     
@@ -138,6 +143,10 @@ class AuthController extends Controller
                 $text = "Gagal Ganti Password";
                 $icon = "error";
             }
+        } else {
+            $title = "Gagal";
+            $text = "Gagal Ganti Password";
+            $icon = "error";
         }
         return response()->json([
             'title' => $title,

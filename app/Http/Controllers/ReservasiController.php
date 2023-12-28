@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Reservasi;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class ReservasiController extends Controller
 {
@@ -24,6 +25,10 @@ class ReservasiController extends Controller
         $elosql=  Reservasi::where('id_reservasi',$request->id);
         $c = $elosql->first(); // mengambil data dari database
         if($request->tombol === "hapus"){
+            $reser_buku = $elosql->first();
+            $id_buku = Buku::where('id_buku',$reser_buku->id_buku)->update([
+                'status_buku'=>'Tersedia',
+            ]);
             $result = $elosql->delete();
             if($result){
                 $icon = "success";
@@ -43,6 +48,8 @@ class ReservasiController extends Controller
             } else if($request->tombol === "tolak"){
                 $status_peminjaman = "Tidak Di Setujui";
                 $status_reservasi = "Pengajuan Peminjaman";
+                $tgl_dipinjam = null;
+                $tgl_dikembalikan = null;
             } else {
                 $status_peminjaman = "Belum Disetujui";
                 $status_reservasi = "Pengajuan Peminjaman";
@@ -94,4 +101,71 @@ class ReservasiController extends Controller
 
         return view('logreservasi.index',['data' => $reservas]);
     }
+
+    public function perpanjang($id)
+    {
+        // $id = decrypt($id);
+        
+        $tgl_skrng = Carbon::now();
+        $tgl_dikembalikan = $tgl_skrng->copy()->addDay(3);
+
+        $result = Reservasi::where('id_reservasi', $id)->update([
+            'tanggal_dikembalikan' => $tgl_dikembalikan,
+        ]);
+
+        $send = Reservasi::join('profil', 'reservasi.id_profil', '=', 'profil.id_profil')->join('buku', 'reservasi.id_buku', '=', 'buku.id_buku')->select('reservasi.*', 'profil.*', 'buku.nama_buku as nama_buku')->where('reservasi.id_reservasi',$id)->first();
+        // dd($send->nama);
+        $response = Http::withHeaders([
+            'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+        ])->post('https://api.fonnte.com/send',[
+            'target' =>'0'.$send->no_hp,
+            'message' => 'Perpanjangan peminjaman buku anda untuk buku berjudul '.$send->nama_buku.' telah diperpenjang sampai tanggal'.$send->tanggal_dikembalikan,
+            'countryCode' => '+62',
+        ]);
+        
+        if($response->successful()){
+            
+            $response = Http::withHeaders([
+                'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+            ])->post('https://api.fonnte.com/send',[
+                'target' =>'081542355622',
+                'message' =>'User dengan nama '.$send->nama .' melakukann perpanjangan peminjaman buku untuk buku berjudul '.$send->nama_buku.' telah diperpenjang sampai tanggal'.$send->tanggal_dikembalikan,
+                'countryCode' => '+62',
+            ]);
+
+            if($response->successful()){
+
+                echo 'berhasil memperpanjang peminjaman buku anda dengan judul '.$send->nama_buku;
+                sleep(5);
+                return redirect()->route('home');
+            }
+        }
+
+    }
+
+    public function ubahStats(Request $request)
+    {
+        // $id = $request->id;
+        $id = $request->id;
+        try{
+            DB::transaction(function() use ($id, $request){
+
+                $row = Reservasi::where('id_reservasi',$id);
+                $data = $row->first();
+                $row->update([
+                    'status_reservasi' => 'Sudah Dikembalikan'
+                ]);
+        
+                Buku::where('id_buku',$data->id_buku)->update([
+                    'status_buku' => 'Tersedia'
+                ]);
+            });
+            return redirect()->route('reservasi');
+            
+        } catch(\Exception $e){
+            
+            return redirect()->route('reservasi');
+        }
+    }
+
 }

@@ -7,10 +7,9 @@
 					    <div class="d-flex">
 					        <button type="button" class="d-inline-block d-sm-inline-block btn btn-sm btn-success mb-2 shadow-sm mr-2" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus fa-sm text-white-50"></i> Tambah Data</button>
 					        <button type="button" class="d-inline-block d-sm-inline-block btn btn-sm btn-info mb-2 shadow-sm mr-2"  data-toggle="modal" data-target="#daftarKategori"><i class="fas fa-sm text-white-50 fa-archive"></i> Daftar Kategori</button>
-					        <a href="#" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
+					        <a href="{{url('exportbuku')}}" class="d-inline-block d-sm-inline-block btn btn-sm btn-primary mb-2 shadow-sm mr-2"><i class="fas fa-download fa-sm text-white-50"></i> Export</a>
 					    </div>
 					</div>
-					
 					<!-- Modal Kategori -->
 <div class="modal fade" id="daftarKategori" tabindex="-1" role="dialog" aria-labelledby="daftarKategorilabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -73,10 +72,6 @@
           </tbody>
         </table>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
     </div>
   </div>
 </div>
@@ -114,6 +109,7 @@
 										<input type="text" id="penerbit" class="form-control mb-3" placeholder="Penerbit">  
 										<input type="text" id="penulis" class="form-control mb-3" placeholder="Penulis">  
 										<input type="number" id="tahun_terbit" class="form-control mb-3" placeholder="Tahun Terbit"> 
+                    <input type="text" id="rak_buku" class="form-control mb-3" placeholder="Rak">
                     <select class="form-control mb-3" id="kategori">
                       <option>Pilih Kategori</option>
                       @foreach($kategori as $a)
@@ -176,7 +172,7 @@
 									                  		<td class="align-middle">{{$a->tahun_terbit}}</td>
 									                  		<td class="align-middle">{{$a->id_kategori}}</td>
 									                  		<td class="align-middle">
-									                  			<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_buku}}"><i class="fa fa-wrench"></i> Edit</button>
+									                  			<button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#editModal{{$a->id_buku}}"><i class="fa fa-wrench"></i> Ubah</button>
 									                  			<a href="{{route('buku.hapus',$a->id_buku)}}" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i> Hapus</a>
 									                  		</td>
 									                  	</tr>
@@ -186,7 +182,7 @@
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header">
-                                                  <h5 class="modal-title" id="exampleModalLabel">Form Edit</h5>
+                                                  <h5 class="modal-title" id="exampleModalLabel">Form Ubah</h5>
                                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                     <span aria-hidden="true">&times;</span>
                                                   </button>
@@ -204,7 +200,7 @@
                                                       </form>
 								                                   </div>
 								                                    <div class="col-md-6 mb-3">
-                                                      <h5 class="text-primary">Form Edit Data Buku</h5>
+                                                      <h5 class="text-primary">Form Ubah Data Buku</h5>
 								                                  	  <div class="mt-3">
 								                                  	<form >
                                                       @csrf  
@@ -213,6 +209,7 @@
 								                                  		<input type="text" id="penerbitEdit" class="form-control mb-3" value="{{$a->penerbit}}" placeholder="Penerbit">  
 								                                  		<input type="text" id="penulisEdit" class="form-control mb-3" value="{{$a->penulis}}" placeholder="Penulis">  
 								                                  		<input type="number" id="tahun_terbitEdit" class="form-control mb-3" value="{{$a->tahun_terbit}}" placeholder="Tahun Terbit"> 
+										                                  <input type="text" id="rak_bukuEdit" class="form-control mb-3" value="{{$a->rak}}" placeholder="Rak">
                                                       <select class="form-control mb-3" id="kategoriEdit">
                                                         <option>Pilih Kategori</option>
                                                         @foreach($kategori as $b)
@@ -227,8 +224,7 @@
                                                   <button type="button" id="editBuku" class="btn btn-success col-12 d-block">Ubah</button>
                                                 </div>
                                                 <div class="modal-footer">
-                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                  <button type="button" class="btn btn-primary">Save changes</button>
+                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup Jendela</button>
                                                 </div>
                                               </div>
                                             </div>

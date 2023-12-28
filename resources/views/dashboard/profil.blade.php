@@ -7,8 +7,8 @@
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex">
-                            <h6 class="m-0 font-weight-bold text-primary mr-0">Profile Anda</h6>
-							<button type="button" class="btn btn-success ml-auto btn-sm" id="editButton" value="Edit"> Edit</button>
+                            <h6 class="m-0 font-weight-bold text-primary mr-0">Profil Anda</h6>
+							<button type="button" class="btn btn-success ml-auto btn-sm" id="editButton" value="Edit"> Ubah</button>
                         </div>
                         <div class="card-body">
 							@foreach($data as $a)

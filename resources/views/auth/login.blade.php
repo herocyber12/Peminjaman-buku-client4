@@ -96,11 +96,6 @@
                                         </button>
                                     </form>
                                     <hr>
-                                    <!-- <div class="g-signin2"><a href="{{url('login/google')}}">Login Goole</a></div> -->
-                                    <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
-                                    <div class="text-center">
-                                        <a class="small" href="forgot-password.html">Lupa Password?</a>
-                                    </div>
                                     <div class="text-center">
                                         <a class="small" href="{{route('register')}}">Buat Akun!</a>
                                     </div>
