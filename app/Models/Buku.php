@@ -18,6 +18,7 @@ class Buku extends Model
         'penulis',
         'tahun_terbit',
         'status_buku',
+        'jumlah_buku',
         'id_kategori',
         'rak',
         'totalpeminjaman'

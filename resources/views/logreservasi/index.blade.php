@@ -1,5 +1,6 @@
 @extends('layouts/dashboard.app')
 @section('contents')
+
 <!-- Page Heading -->
 <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Riwayat Reservasi</h1>
@@ -17,7 +18,7 @@
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th>No</th>
 
                             <th>Id Reservasi</th>
 							<th>Nama Peminjam</th>
@@ -28,7 +29,7 @@
                     </thead>
                     <tfoot>
                         <tr>
-                            <th>#</th>
+                            <th>No</th>
                             <th>Id Reservasi</th>
 							<th>Nama Peminjam</th>
 							<th>Nama Buku</th>

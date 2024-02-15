@@ -33,6 +33,7 @@ class BukuController extends Controller
             'penulis' => 'required|string',
             'tahun_terbit' => 'required|numeric',
             'kategori' => 'required',
+            'status_buku' => 'required',
             'sinopsis' => 'required',
             'rak_buku' => 'required',
         ],[
@@ -73,7 +74,8 @@ class BukuController extends Controller
             'penulis' => $request->penulis,
             'tahun_terbit' => $request->tahun_terbit,
             'rak' => $request->rak_buku,
-            'status_buku' => 'Tersedia',
+            'status_buku' => $request->status_buku,
+            'jumlah_buku' => $request->jumlh_buku,
             'id_kategori' => $request->kategori,
             'totalpeminjaman' => 0
         ];
@@ -127,6 +129,8 @@ class BukuController extends Controller
                             'penerbit' => $request->penerbit,
                             'penulis' => $request->penulis,
                             'tahun_terbit' => $request->tahun_terbit,
+                            'status_buku' => $request->status_buku,
+                            'jumlah_buku' => $request->jumlh_buku,
                             'id_kategori' => $request->kategori,
                             'rak' => $request->rak_buku
                         ];
@@ -167,11 +171,13 @@ class BukuController extends Controller
                     'kategori' => 'required',
                 ]);
             $update = [
-                'sinopsis' => $request->input('sinopsisEdit'),
+                // 'sinopsis' => $request->input('sinopsisEdit'),
                 'nama_buku'=> $request->nama_buku,
                 'penerbit' => $request->penerbit,
                 'penulis' => $request->penulis,
                 'tahun_terbit' => $request->tahun_terbit,
+                'status_buku' => $request->status_buku,
+                'jumlah_buku' => $request->jumlh_buku,
                 'id_kategori' => $request->kategori,
                 'rak' => $request->rak_buku
             ];

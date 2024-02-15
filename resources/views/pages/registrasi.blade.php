@@ -55,6 +55,8 @@
                         <div class="input__item">
                             <input type="text" name="password" placeholder="Kata sandi">
                             <span class="icon_lock"></span>
+                            <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword3()"><i class="fa fa-eye" id="iconnya3"></i></button>
+
                         </div>
                         <button type="submit" class="site-btn">Buat Akun</button>
                     </form>

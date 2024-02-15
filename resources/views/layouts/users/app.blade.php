@@ -19,6 +19,7 @@
     <!-- Css Styles -->
     <link rel="stylesheet" href="{{asset('css/landing/bootstrap.min.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('css/landing/font-awesome.min.css')}}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css" type="text/css">
     <link rel="stylesheet" href="{{asset('css/landing/elegant-icons.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('css/landing/plyr.css')}}" type="text/css">
     <link rel="stylesheet" href="{{asset('css/landing/nice-select.css')}}" type="text/css">
@@ -112,6 +113,28 @@
         setTimeout(function (){
             $('#landingTamu').modal('show');
         },delayTime);
+
+        var liso;
+
+            $("#password, #confirmation").on("input", function() {
+                var password = $("#password").val();
+                var confirmation = $("#confirmation").val();
+                var passwordMatchStatus = $("#passwordMatchStatus");
+                if (password === "" && confirmation === "") {
+                    passwordMatchStatus.text(""); // Kosongkan pesan jika kedua input kosong
+                    passwordMatchStatus.removeClass(); // Kosongkan pesan jika kedua input kosong
+                } else if (password === confirmation) {
+                    liso = "cocok";
+                    passwordMatchStatus.text("Password cocok");
+                    passwordMatchStatus.removeClass('alert alert-danger');
+                    passwordMatchStatus.addClass('alert alert-success');
+                } else {
+                    liso = "tidak cocok";
+                    passwordMatchStatus.text("Password tidak cocok. Silakan periksa kembali.");
+                    passwordMatchStatus.removeClass('alert alert-success');
+                    passwordMatchStatus.addClass('alert alert-danger');
+                }
+            });
         
         const urlUpdate = "{{$a}}";
         const urlKegiatan = "{{$l}}";
@@ -246,6 +269,47 @@
                 });
             }
         });
+
+        var gantiPassword = "{{route('passwordchange')}}";
+
+            $('#ubahSandi').on('click',function(){
+                var oldPassword = $('#oldPassword').val();
+                var newPassword = $('#password').val();
+
+                var data = {
+                    _token : "{{csrf_token()}}",
+                    oldPassword : oldPassword,
+                    newPassword : newPassword
+                };
+
+                if(liso === "cocok"){
+                    $.ajax({
+                        url:gantiPassword,
+                        type: 'POST',
+                        data: data,
+                        success: function (e){
+                            var title = e.title;
+                            var text = e.text;
+                            var icon = e.icon;
+                            Swal.fire({
+                                title: title,
+                                text: text,
+                                icon: icon,
+                            }).then((result)=> {
+                                if (result) {
+                                    location.reload();
+                                }
+                            });
+                        },error: function (xhr, status, error) {
+                          Swal.fire(
+                            'error',
+                            xhr.status,
+                            error,
+                          );
+                        }  
+                    });
+                }
+            });
     });
 </script>
 <script>
@@ -261,6 +325,40 @@
             preview.style.display = 'block';
         }
     });
+
+    function togglepassword1(){
+          const passwordInput = document.getElementById('password');
+          const classPassword = document.getElementById('iconnya1');
+          if(passwordInput.type === "password"){
+            passwordInput.type = "text";
+            classPassword.className = "fa fa-eye-slash";
+          } else {
+            passwordInput.type = "password";
+            classPassword.className = "fa fa-eye";
+            }
+        }
+    function togglepassword2(){
+        const passwordInput = document.getElementById('confirmation');
+        const classPassword = document.getElementById('iconnya2');
+        if(passwordInput.type === "password"){
+        passwordInput.type = "text";
+        classPassword.className = "fa fa-eye-slash";
+        } else {
+        passwordInput.type = "password";
+        classPassword.className = "fa fa-eye";
+        }
+    }
+    function togglepassword3(){
+        const passwordInput = document.getElementById('oldPassword');
+        const classPassword = document.getElementById('iconnya3');
+        if(passwordInput.type === "password"){
+        passwordInput.type = "text";
+        classPassword.className = "fa fa-eye-slash";
+        } else {
+        passwordInput.type = "password";
+        classPassword.className = "fa fa-eye";
+        }
+    }
 </script>
 </body>
 

@@ -85,7 +85,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="{{route('detail-stats','Tersedia')}}" class="poc-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="{{route('detail-stats','Tersedia')}}" class="poc-btn">Lihat Semua <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>
@@ -93,15 +93,20 @@
                             <?php
                             $booktersedia = false;
                             foreach($data as $a){
-                            if($a->status_buku ==="Tersedia"){
+                            if($a->status_buku ==="Tersedia" || $a->status_buku === "Rusak"){
                                 $booktersedia = true; 
+                                if($a->status_buku === "Tersedia"){
+                                    $bg = "bg-success";
+                                } else if ($a->status_buku === "Rusak"){
+                                    $bg = "bg-warning";
+                                }
                             ?>
                                 <div class="col-lg-3 col-md-6 col-sm-6 mb-5 pb-5 col-xl-2 mr-3 card shadow">
                                 <a href="{{url('detail-buku', $a->id_buku)}}">
                                     <div>
                                         <div class="product__item" style="width: 163px; height: 265px;">
                                             <div class="product__item__pic set-bg" data-setbg="{{asset('storage/'.$a->cover)}}">
-                                                <div class="st bg-success">{{$a->status_buku}}</div>
+                                                <div class="st {{ $bg }}">{{$a->status_buku}}</div>
                                                     <div class="comment"><i class="fa fa-comments"></i> {{$ulasanPerBuku[$a->id_buku]}}</div>
                                                     <div class="view"><i class="fa fa-book"></i> {{$a->totalpeminjaman}}</div>
                                                 </div>
@@ -140,7 +145,7 @@
                             </div>
                             <div class="col-lg-4 col-md-4 col-sm-4">
                                 <div class="btn__all">
-                                    <a href="{{route('detail-stats','Dipinjam')}}" class="poc-btn">View All <span class="arrow_right"></span></a>
+                                    <a href="{{route('detail-stats','Dipinjam')}}" class="poc-btn">Lihat Semua <span class="arrow_right"></span></a>
                                 </div>
                             </div>
                         </div>

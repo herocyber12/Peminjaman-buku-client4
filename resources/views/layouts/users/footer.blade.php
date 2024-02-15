@@ -14,6 +14,7 @@
                     <ul>
                         <li><a href="{{route('daftar')}}">Home</a></li>
                         <li><a href="{{route('kategori')}}">Kategori</a></li>
+                        <li><a href="{{route('cari')}}">Cari</a></li>
                     </ul>
                 </div>
             </div>

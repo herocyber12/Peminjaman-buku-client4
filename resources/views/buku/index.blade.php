@@ -1,6 +1,8 @@
 @extends('layouts/dashboard.app')
 @section('contents')
 
+
+
                     <!-- Page Heading -->
                     <div class="d-flex flex-column flex-sm-row justify-content-between mb-4">
 					    <h1 class="h3 mb-0 text-gray-800">Daftar Buku</h1>
@@ -111,11 +113,18 @@
 										<input type="number" id="tahun_terbit" class="form-control mb-3" placeholder="Tahun Terbit"> 
                     <input type="text" id="rak_buku" class="form-control mb-3" placeholder="Rak">
                     <select class="form-control mb-3" id="kategori">
-                      <option>Pilih Kategori</option>
+                      <option value="Kategori Belum diisi">Pilih Kategori</option>
                       @foreach($kategori as $a)
                         <option value="{{ $a->kategori}}">{{$a->kategori}}</option>
                       @endforeach
                     </select> 
+                    <select class="form-control mb-3" id="status_buku">
+                      <option>Status Buku</option>
+                        <option value="Tersedia">Tersedia</option>
+                        <option value="Dipinjam">Dipinjam</option>
+                        <option value="Rusak">Rusak</option>
+                    </select> 
+                    <input type="number" class="form-control mb-3" id="jumlh_buku" placeholder="Masukan Jumlah Buku">
                     <textarea id="editor" name="sinopsis" style="height: 100px"></textarea>
 									</form>
 									  </div>
@@ -146,6 +155,7 @@
                                             <th>Nama Buku</th>
                                             <th>Penerbit</th>
                                             <th>Penulis</th>
+                                            <th>Jumlah</th>
                                             <th>Tahun Terbit</th>
                                             <th>Kategori</th>
 											                      <th>Aksi</th>
@@ -157,6 +167,7 @@
                                             <th>Nama Buku</th>
                                             <th>Penerbit</th>
                                             <th>Penulis</th>
+                                            <th>Jumlah</th>
                                             <th>Tahun Terbit</th>
                                             <th>Kategori</th>
 											                      <th>Aksi</th>
@@ -169,6 +180,7 @@
 									                  		<td class="align-middle">{{$a->nama_buku}}</td>
 									                  		<td class="align-middle">{{$a->penerbit}}</td>
 									                  		<td class="align-middle">{{$a->penulis}}</td>
+									                  		<td class="align-middle">{{$a->jumlah_buku}}</td>
 									                  		<td class="align-middle">{{$a->tahun_terbit}}</td>
 									                  		<td class="align-middle">{{$a->id_kategori}}</td>
 									                  		<td class="align-middle">
@@ -178,7 +190,7 @@
 									                  	</tr>
                                       
                                           <!-- Modal -->
-                                          <div class="modal fade" id="editModal{{$a->id_buku}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                          <div class="modal fade edit-modal" id="editModal{{$a->id_buku}}" data-id-buku="{{$a->id_buku}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                               <div class="modal-content">
                                                 <div class="modal-header">
@@ -204,24 +216,34 @@
 								                                  	  <div class="mt-3">
 								                                  	<form >
                                                       @csrf  
-                                                      <input type="hidden" id="id_buku" value="{{$a->id_buku}}">
-								                                  		<input type="text" id="nama_bukuEdit" class="form-control mb-3" value="{{$a->nama_buku}}" placeholder="Masukan Nama Buku">  
-								                                  		<input type="text" id="penerbitEdit" class="form-control mb-3" value="{{$a->penerbit}}" placeholder="Penerbit">  
-								                                  		<input type="text" id="penulisEdit" class="form-control mb-3" value="{{$a->penulis}}" placeholder="Penulis">  
-								                                  		<input type="number" id="tahun_terbitEdit" class="form-control mb-3" value="{{$a->tahun_terbit}}" placeholder="Tahun Terbit"> 
-										                                  <input type="text" id="rak_bukuEdit" class="form-control mb-3" value="{{$a->rak}}" placeholder="Rak">
-                                                      <select class="form-control mb-3" id="kategoriEdit">
+                                                      <input type="hidden" name="" id="id_buku{{$a->id_buku}}" value="{{$a->id_buku}}">
+								                                  		<input type="text" name="nama_buku" id="nama_bukuEdit{{$a->id_buku}}" class="form-control mb-3" value="{{$a->nama_buku}}" placeholder="Masukan Nama Buku">  
+								                                  		<input type="text" name="penerbit" id="penerbitEdit{{$a->id_buku}}" class="form-control mb-3" value="{{$a->penerbit}}" placeholder="Penerbit">  
+								                                  		<input type="text" name="penulis" id="penulisEdit{{$a->id_buku}}" class="form-control mb-3" value="{{$a->penulis}}" placeholder="Penulis">  
+								                                  		<input type="number" name="tahun_terbit" id="tahun_terbitEdit{{$a->id_buku}}" class="form-control mb-3" value="{{$a->tahun_terbit}}" placeholder="Tahun Terbit"> 
+										                                  <input type="text" name="rak_buku" id="rak_bukuEdit{{$a->id_buku}}" class="form-control mb-3" value="{{$a->rak}}" placeholder="Rak">
+                                                      <span class="text-danger">*Wajib Diperhatikan dan selalu diisi</span>
+                                                      <select name="kategori" class="form-control mb-3" id="kategoriEdit{{$a->id_buku}}">
                                                         <option>Pilih Kategori</option>
                                                         @foreach($kategori as $b)
                                                           <option value="{{ $b->kategori}}">{{$b->kategori}}</option>
                                                         @endforeach
                                                       </select> 
-                                                      <textarea id="editorEdit" class="editorEdit" name="sinopsis" style="height: 100px">{{$a->sinopsis}}</textarea>
+                                                      <span class="text-danger">*Wajib Diperhatikan dan selalu diisi</span>
+                                                      <select name="status_buku" class="form-control mb-3" id="status_bukuEdit{{$a->id_buku}}">
+                                                        <option>Status Buku</option>
+                                                          <option value="Tersedia">Tersedia</option>
+                                                          <option value="Dipinjam">Dipinjam</option>
+                                                          <option value="Rusak">Rusak</option>
+                                                      </select> 
+                                                      
+                                                      <input type="number" name="jumlh_buku" class="form-control mb-3" id="jumlh_bukuEdit{{$a->id_buku}}" placeholder="Masukan Jumlah Buku" value="{{$a->jumlah_buku}}">
+                                                      <textarea id="editorEdit" class="editorEdit" data-id-buku="{{$a->id_buku}}" name="sinopsis" style="height: 100px">{{$a->sinopsis}}</textarea>
 								                                  	</form>
 								                                  	  </div>
 								                                    </div>
 							                                    </div>
-                                                  <button type="button" id="editBuku" class="btn btn-success col-12 d-block">Ubah</button>
+                                                  <button type="button" class="btn btn-success col-12 d-block editBuku" value="Ubah">Ubah</button>
                                                 </div>
                                                 <div class="modal-footer">
                                                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup Jendela</button>

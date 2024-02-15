@@ -38,12 +38,23 @@
                         </tr>
                     </tfoot>
                     <tbody class="text-center">
-                        @php($no=1)
+                        @php($no=1) 
+                        @php($tolak=null)
+                        
                         @foreach($data as $a)
-                        @if($a->status_reservasi === "Sudah Di Kembalikan")
-                            {{$bg = "success";}}
+                        @if($a->status_peminjaman === "Tidak Di Setujui")
+                            <?php 
+                            $tolak = true;
+                            $message = "Pengajuan Ditolak"; 
+                            ?>
+                        @endif
+                        @if($a->status_reservasi === "Sudah Dikembalikan")
+                            <?php 
+                            $bg = "success";
+                            $message = "Sudah Dikembalikan"; 
+                            ?>
                         @else 
-                            {{$bg = "warning";}}
+                            <?php $bg = "warning";?>
                         @endif
 						<tr>
                             <td>{{$no++}}</td>
@@ -60,7 +71,7 @@
                                     <button type="submit" name="masih_dipinjam" class="btn btn-danger">{{$a->status_reservasi}}</button>
                                 </form>
                                 @else
-                                <span class="bg-{{$bg}} text-white p-2" style="border-radius: 7px; ">{{$a->status_reservasi}}</span>
+                                <span class="bg-{{$bg}} text-white p-2" style="border-radius: 7px; ">{{ isset($tolak) ? $message : $a->status_reservasi}}</span>
                                 @endif
                             
                             </td>

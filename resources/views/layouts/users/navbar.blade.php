@@ -13,10 +13,13 @@
                         <nav class="header__menu mobile-menu">
                             <ul>
                                 <li class="{{ request()->routeIs('daftar') ? 'active' : '' }}">
-                                    <a href="{{ route('daftar') }}">Home</a>
+                                    <a href="{{ route('daftar') }}"> <i class="icon_house_alt"></i> Home</a>
                                 </li>
                                 <li class="{{ request()->routeIs('kategori') ? 'active' : '' }}">
-                                    <a href="{{ route('kategori') }}">Kategori</a>
+                                    <a href="{{ route('kategori') }}"> <i class="icon_book_alt"></i> Kategori</a>
+                                </li>
+                                <li class="{{ request()->routeIs('cari') ? 'active' : '' }}">
+                                    <a href="{{ route('cari') }}"> <i class="icon_search"></i> Cari Buku</a>
                                 </li>
                             </ul>
                         </nav>
@@ -33,7 +36,7 @@
                                 $url = route('guest.profil');
                             endif
                             ?>        
-                            <a href="{{$url}}">{{session('profil')->nama}} <span class="icon_profile"></span></a>
+                            <a href="{{$url}}" class="btn btn-primary">{{session('profil')->nama}} <span class="icon_profile"></span></a>
                         @else
                             <a href="{{url('login')}}" class="btn btn-success btn-sm">Login</a>
                         @endif

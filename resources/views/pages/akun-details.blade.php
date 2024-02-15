@@ -10,9 +10,6 @@
                         <!--<button type="button" class="btn btn-sm btn-info">Bookmark</button>-->
 					    <a href="{{route('guest.profil')}}" class="btn btn-sm btn-info ml-2">Profil</a>
                     </div>
-                    <div class="col-sm-6 text-right">
-					    <a href="{{url('guest/logout')}}" class="btn btn-sm btn-danger">Logout</a>
-                    </div>
                 </div>
 			</div>
         <div class="row mb-5 pb-5">            
@@ -59,10 +56,56 @@
                             <input type="text" id="username" placeholder="Username Anda" value="{{auth()->user()->username}}">
                             <span class="icon_profile"></span>
                         </div>
-                        
-                        <button type="button" class="btn btn-success" id="ubahGuestProfil" style="border-radius: 5px;">Ubah</button>
+                        <div class="row mt-2">
+                            <div class="d-flex flex-row">
+                                <div class="col-xl-3">
+                                    <button type="button" class="btn btn-success" id="ubahGuestProfil" style="border-radius: 5px;">Ubah</button>
+                                </div>
+                                <div class="col-xl-7 text-center">
+                                    <button type="button" class="btn btn-info mr-1 mt-2 btn-block" data-toggle="modal" data-target="#exampleModal">Ganti Password</button>
+													
+													<!-- Modal -->
+													<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+													  <div class="modal-dialog modal-dialog-centered" role="document">
+													    <div class="modal-content">
+													      <div class="modal-header">
+													        <h5 class="modal-title" id="exampleModalLabel">Ganti Password</h5>
+													        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+													          <span aria-hidden="true">&times;</span>
+													        </button>
+													      </div>
+													      <div class="modal-body">
+													    	<form>
+																@csrf
+                                                                <div class="input-group mb-3">
+                                                                    <input type="password" id="oldPassword" class="form-control" placeholder = "Masukan Password Lama">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword3()"><i class="fa fa-eye" id="iconnya3"></i></button>
 
-                        <a href="{{route('ganti-password')}}" class="btn btn-info mr-1 mt-2">Ganti Password</a>
+                                                                </div>
+																<div class="input-group mb-3">
+																    <input type="password" id="password" class="form-control" placeholder = "Masukan Password Baru">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword1()"><i class="fa fa-eye" id="iconnya1"></i></button>
+                                                                </div>
+																<div class="input-group mb-3">
+																    <input type="password" id="confirmation" class="form-control" placeholder = "Konfirmasi Password Baru">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword2()"><i class="fa fa-eye" id="iconnya2"></i></button>
+                                                                </div>
+																<div id="passwordMatchStatus"></div>
+
+																<button type="button" id="ubahSandi" class="btn btn-success col-12 d-block btn-sm">Ubah</button>
+															</form>
+													      </div>
+													    </div>
+													  </div>
+													</div>
+
+                                </div>
+                                <div class="col-xl-2">
+                                    <a href="{{url('guest/logout')}}" class="btn btn-danger mt-2">Logout</a>
+
+                                </div>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>

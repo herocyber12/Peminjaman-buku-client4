@@ -48,9 +48,19 @@
 													      <div class="modal-body">
 													    	<form>
 																@csrf
-																<input type="password" id="oldPassword" class="form-control mb-3" placeholder = "Masukan Password Lama">
-																<input type="password" id="password" class="form-control mb-3" placeholder = "Masukan Password Baru">
-																<input type="password" id="confirmation" class="form-control mb-3" placeholder = "Konfirmasi Password Baru">
+																<div class="input-group mb-3">
+                                                                    <input type="password" id="oldPassword" class="form-control" placeholder = "Masukan Password Lama">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword3()"><i class="fa fa-eye" id="iconnya3"></i></button>
+
+                                                                </div>
+																<div class="input-group mb-3">
+																    <input type="password" id="password" class="form-control" placeholder = "Masukan Password Baru">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword1()"><i class="fa fa-eye" id="iconnya1"></i></button>
+                                                                </div>
+																<div class="input-group mb-3">
+																    <input type="password" id="confirmation" class="form-control" placeholder = "Konfirmasi Password Baru">
+                                                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword2()"><i class="fa fa-eye" id="iconnya2"></i></button>
+                                                                </div>
 																<div id="passwordMatchStatus"></div>
 
 																<button type="button" id="ubahSandi" class="btn btn-success col-12 d-block btn-sm">Ubah</button>

@@ -88,8 +88,9 @@
                                             <input type="text" name="username" class="form-control form-control-user"
                                                 placeholder="Masukan Username anda">
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control form-control-user" placeholder="Kata Sandi">
+                                        <div class="input-group">
+                                            <input type="password" name="password" id="password" class="form-control form-control-user" placeholder="Kata Sandi">
+                                            <button type="button" class="input-group-text bg-transparent btn-inverse-white" onclick="togglepassword()"><i class="fa fa-eye" id="iconnya"></i></button>
                                         </div>
                                         <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
                                             Masuk
@@ -121,7 +122,19 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{{asset('js/dashboard/sb-admin-2.min.js')}}"></script>
-
+    <script>
+        function togglepassword(){
+      const passwordInput = document.getElementById('password');
+      const classPassword = document.getElementById('iconnya');
+      if(passwordInput.type === "password"){
+        passwordInput.type = "text";
+        classPassword.className = "fa fa-eye-slash";
+      } else {
+        passwordInput.type = "password";
+        classPassword.className = "fa fa-eye";
+      }
+    }
+    </script>
 </body>
 
 </html>

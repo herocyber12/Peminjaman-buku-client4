@@ -97,7 +97,7 @@ class GuestController extends Controller
                 echo "<script>alert('Berhasil')</script>";
 
                 $response = Http::withHeaders([
-                    'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                    'Authorization'=> env('APP_FONNTE'),
                 ])->post('https://api.fonnte.com/send',[
                     'target' => '081542355622',
                     'message' => 'Atas Nama '.$request->nama.' Mendaftarkan Diri Ke Member Perpustakaan Widya Kusuma',
@@ -254,7 +254,7 @@ class GuestController extends Controller
 
     public function riwayat()
     {
-        $data = Reservasi::join('buku','reservasi.id_buku','=','buku.id_buku')->where('reservasi.id_profil',auth()->user()->id_profil)->select('buku.cover','buku.nama_buku','reservasi.*')->get();
+        $data = Reservasi::join('buku','reservasi.id_buku','=','buku.id_buku')->where('reservasi.id_profil',auth()->user()->id_profil)->select('buku.cover','buku.nama_buku','reservasi.*')->orderBy('created_at','DESC')->get();
         return view('pages.riwayat-peminjaman',['data'=> $data]);
     }
 

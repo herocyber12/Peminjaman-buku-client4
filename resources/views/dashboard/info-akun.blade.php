@@ -43,19 +43,19 @@
 						</tr>
 						<tr>
 							<td>Alamat</td>
-							<td> : Bumirejo</td>
+							<td> : {{$data->alamat}}</td>
 						</tr>
 						<tr>
 							<td>No HP</td>
-							<td>: 08534567823</td>
+							<td>: {{$data->no_hp}}</td>
 						</tr>
 						<tr>
 							<td>E-mail</td>
-							<td>: info@gmail.com</td>
+							<td>: {{$data->email}}</td>
 						</tr>
 						<tr>
 							<td>Level</td>
-							<td>: Member</td>
+							<td>: {{$data->level}}</td>
 						</tr>
 					</table>
 				</div>

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use App\Models\Profil;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -58,7 +59,7 @@ class AuthController extends Controller
     public function create(Request $request)
     {
 
-        try {
+        // try {
             $validator = Validator::make($request->all(), [
                 'nama' => 'required|string',
                 'alamat' => 'required',
@@ -79,11 +80,6 @@ class AuthController extends Controller
             ]);
     
             if($validator->fails()){
-                // return response()->json([
-                //     'act' => 'Gagal',
-                //     'message' => $validator,
-                //     'header' => 'error'
-                // ]);
                 return back()->withErrors($validator)->withInput();
             }
     
@@ -119,11 +115,19 @@ class AuthController extends Controller
             } else {
                 echo "<script>alert('Gagal menambahkan profil! Silakan ulangi beberapa saat lagi.')</script>";
             }
-    
+
+            Http::withHeaders([
+                'Authorization'=> env('APP_FONNTE'), // TOKEN API KODE disini
+            ])->post('https://api.fonnte.com/send',[
+                'target' =>'081542355622', 
+                'message' => 'Atas Nama '. $request->nama.' melakukan pendaftaran akun "' ,
+                'countryCode' => '+62',
+            ]);
+
             return redirect()->to('login');
-        } catch (\Exception $e){
-            return back()->withErrors(['eror' => 'Terjadi kesalahan.'])->withInput();
-        }
+        // } catch (\Exception $e){
+        //     return back()->withErrors(['eror' => 'Terjadi kesalahan.'])->withInput();
+        // }
     }
 
     public function gantiPassword(Request $request)

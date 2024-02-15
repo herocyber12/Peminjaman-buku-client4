@@ -14,9 +14,8 @@
 
     <!-- Custom fonts for this template-->
     <link href="{{asset('vendor/dashboard/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/7.4.47/css/materialdesignicons.min.css">
     <!-- Custom styles for this template-->
     <link href="{{asset('css/dashboard/sb-admin-2.min.css')}}" rel="stylesheet">
     <style>
@@ -109,17 +108,17 @@
         <div class="modal-dialog dialog-modal-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Yain Keluar ?</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Yakin Keluar ?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="d-flex">                   
-                        <button class="btn btn-secondary mr-3" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-secondary mr-3" type="button" data-dismiss="modal">Batal</button>
                         <form action="{{route('logout')}}" method="post">
                             @csrf
-                            <button type="submit" class="btn btn-danger" value="logout"><i class="fa fa-logout"></i>Logout</button>
+                            <button type="submit" class="btn btn-danger" value="logout"><i class="fa fa-logout"></i>Keluar</button>
                         </form>
                     </div> 
                 </div>
@@ -167,19 +166,38 @@
       });
     </script>
     <script>
+    const editorElements = document.querySelectorAll('.editorEdit');
+        var sinopsisData = {};
+
+        editorElements.forEach(element => {
+            const idBuku = element.dataset.idBuku;
+            ClassicEditor
+                .create(element)
+                .then(editorEdit => {
+                    // sinopsisData[idBuku] = sinopsisData[idBuku] || '';
+                    editorEdit.setData(sinopsisData[idBuku]);
+
+                    editorEdit.model.document.on('change:data', () => {
+                        sinopsisData[idBuku] = editorEdit.getData();
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
         var sinopsis;
-        var sinopsis2;
         ClassicEditor
             .create( document.querySelector( '#editor' ) )
             .then(editor => {
                 sinopsis = editor;
-            })
-        
-        ClassicEditor
-            .create( document.querySelector( '.editorEdit' ) )
-            .then(editorEdit => {
-                sinopsis2 = editorEdit;
-            })
+            });
+        // var sinopsis2;
+        // ClassicEditor
+        //     .create( document.querySelector( '.editorEdit' ) )
+        //     .then(editor => {
+        //         sinopsis2 = editor;
+        //     });
     </script>
     <?php 
         $bukuSimpan = route('buku.simpan');
@@ -325,6 +343,8 @@
                     formData.append('tahun_terbit', $('#tahun_terbit').val());
                     formData.append('rak_buku', $('#rak_buku').val());
                     formData.append('kategori', $('#kategori').val());
+                    formData.append('status_buku', $('#status_buku').val());
+                    formData.append('jumlh_buku', $('#jumlh_buku').val());
                     formData.append('sinopsis', sinopsis.getData());
                     formData.append('_token', "{{ csrf_token() }}");
                 $.ajax({
@@ -354,23 +374,24 @@
             });
             var urlHapus = "{{route('buku.hapus',['id'=>':id'])}}";
             
-            $('#editBuku').on('click',function(){
-                var id_buku = $('#id_buku').val();
+            $('.editBuku').on('click',function(){
+                var id_buku = $(this).closest('.edit-modal').data('id-buku');
                 var fileupload = $('#gambarInputEdit')[0].files;
                 // var sinopsis = CKEditor.instances.editor.getData();
-                
+                var sinopsisDataBuku = sinopsisData[id_buku];
                 var formData = new FormData();
                     formData.append('image', fileupload[0]);
                     formData.append('id_buku', id_buku);
-                    formData.append('nama_buku', $('#nama_bukuEdit').val());
-                    formData.append('penerbit', $('#penerbitEdit').val());
-                    formData.append('penulis', $('#penulisEdit').val());
-                    formData.append('tahun_terbit', $('#tahun_terbitEdit').val());
-                    formData.append('rak_buku', $('#rak_bukuEdit').val());
-                    formData.append('kategori', $('#kategoriEdit').val());
-                    formData.append('sinopsisEdit', sinopsis2.getData());
+                    formData.append('nama_buku', $('#nama_bukuEdit'+ id_buku).val());
+                    formData.append('penerbit', $('#penerbitEdit'+ id_buku).val());
+                    formData.append('penulis', $('#penulisEdit'+ id_buku).val());
+                    formData.append('tahun_terbit', $('#tahun_terbitEdit'+ id_buku).val());
+                    formData.append('rak_buku', $('#rak_bukuEdit'+ id_buku).val());
+                    formData.append('kategori', $('#kategoriEdit'+ id_buku).val());
+                    formData.append('status_buku', $('#status_bukuEdit'+ id_buku).val());
+                    formData.append('jumlh_buku', $('#jumlh_bukuEdit'+ id_buku).val());
+                    formData.append('sinopsisEdit', sinopsisDataBuku);
                     formData.append('_token', "{{ csrf_token() }}");
-
                     var urlFinal = urlBukuEdit.replace(':id',id_buku);
                 $.ajax({
                     url:urlFinal,
@@ -724,7 +745,7 @@
             }
         });
 
-         var inputEdit = document.getElementById('gambarInputEdit');
+        var inputEdit = document.getElementById('gambarInputEdit');
         var previewEdit = document.getElementById('gambarPreviewEdit');
         inputEdit.addEventListener('change', function() {
             var fileEdit = inputEdit.files[0];
@@ -734,6 +755,40 @@
                 previewEdit.style.display = 'block';
             }
         });
+
+        function togglepassword1(){
+          const passwordInput = document.getElementById('password');
+          const classPassword = document.getElementById('iconnya1');
+          if(passwordInput.type === "password"){
+            passwordInput.type = "text";
+            classPassword.className = "fa fa-eye-slash";
+          } else {
+            passwordInput.type = "password";
+            classPassword.className = "fa fa-eye";
+            }
+        }
+    function togglepassword2(){
+        const passwordInput = document.getElementById('confirmation');
+        const classPassword = document.getElementById('iconnya2');
+        if(passwordInput.type === "password"){
+        passwordInput.type = "text";
+        classPassword.className = "fa fa-eye-slash";
+        } else {
+        passwordInput.type = "password";
+        classPassword.className = "fa fa-eye";
+        }
+    }
+    function togglepassword3(){
+        const passwordInput = document.getElementById('oldPassword');
+        const classPassword = document.getElementById('iconnya3');
+        if(passwordInput.type === "password"){
+        passwordInput.type = "text";
+        classPassword.className = "fa fa-eye-slash";
+        } else {
+        passwordInput.type = "password";
+        classPassword.className = "fa fa-eye";
+        }
+    }
     </script>
 </body>
 

@@ -1,0 +1,6 @@
+NOTE : 
+tambahkan barisan ke ke dalam file ".env"
+
+APP_FONNTE="fum4d89#AkTSQ+Pvv5J#"
+
+jika sudah ada tidak perlu tambahkan

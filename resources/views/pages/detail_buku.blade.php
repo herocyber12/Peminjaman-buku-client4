@@ -31,9 +31,11 @@
                                     <div class="col-lg-6 col-md-6">
                                         <ul>
                                             <li><span>Kategori:</span> {{$a->id_kategori}}</li>
+                                            <li><span>Penulis:</span> {{$a->penulis}}</li>
                                             <li><span>Penerbit:</span> {{$a->penerbit}}</li>
                                             <li><span>Tahun Terbit:</span> {{$a->tahun_terbit}}</li>
                                             <li><span>Rak:</span> {{$a->rak}}</li>
+                                            <li> <span>Buku Tersedia:</span> {{$a->jumlah_buku}} Buku </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -41,17 +43,20 @@
                             <div class="anime__details__btn d-flex">
                                 <!-- <a href="#" class="follow-btn"><i class="fa fa-bookmark-o"></i> Bookmark</a> -->
                                 @php
-                                if($a->status_buku === "Dipinjam")
+                                if($a->jumlah_buku === 0)
                                 {
                                     {{$disabled = "disabled";}}
-                                }elseif($a->status_buku === "Tersedia"){
+                                    {{$text = "Buku Sedang Tidak Tersedia !";}}
+                                }elseif($a->jumlah_buku >= 1){
                                     {{$disabled = "";}}
+                                    {{$text="Pinjam";}}
                                 }
                                 @endphp
                                 <form action="{{route('pengajuan')}}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id_buku" value="{{$a->id_buku}}">
-                                    <button type="button" class="btn follow-btn" data-toggle="modal" data-target="#pinjamBtn" {{$disabled}}><span>Pinjam</span></button>
+                                    <button type="button" class="btn follow-btn" data-toggle="modal" data-target="#pinjamBtn" {{$disabled}}><span>{{$text}}</span></button>
+                                    
                                     <!-- Modal -->
                                     <div class="modal fade" id="pinjamBtn" tabindex="-1" role="dialog" aria-labelledby="pinjamBtnLabel" aria-hidden="true">
                                       <div class="modal-dialog" role="document">
@@ -63,6 +68,12 @@
                                             </button>
                                           </div>
                                           <div class="modal-body">
+                                              <div class="input-group mb-3">
+                                                  <input type="number" name="maxhari" class="form-control" id="inlineFormInputGroupUsername" placeholder="Maksimal 30 hari" oninput="limitMax(this, 30)">
+                                                  <div class="input-group-prepend">
+                                                    <div class="input-group-text">Hari</div>
+                                                  </div>
+                                               </div>
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Pinjam!</button>
                                           </div>
@@ -124,7 +135,7 @@
 					<div class="col-lg-4 col-md-4">
                         <div class="anime__details__sidebar">
                             <div class="section-title">
-                                <h5>you might like...</h5>
+                                <h5>Kamu mungkin suka</h5>
                             </div>
                             @foreach($random as $d)
                             <div class="product__sidebar__view__item set-bg" data-setbg="{{asset('storage/'.$d->cover)}}">
@@ -138,3 +149,10 @@
         </section>
         <!-- Anime Section End -->
 @endsection
+<script>
+    function limitMax(element, max) {
+        if (element.value > max) {
+            element.value = max;
+        }
+    }
+</script>

@@ -68,7 +68,7 @@ class GoogleController extends Controller
                 ]);
 
                 // $response = Http::withHeaders([
-                //     'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                //     'Authorization'=> env('APP_FONNTE'),
                 // ])->post('https://api.fonnte.com/send',[
                 //     'target' =>'081542355622',
                 //     'message' => 'Pengguna'.$user->name.' telah membuat akun dengan Password akun '.$randomString,

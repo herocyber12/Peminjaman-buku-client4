@@ -53,29 +53,32 @@ Route::get('/', function () {
 });
 
 Route::get('/cekdate', function () {
-    $today = Carbon::now()->toDateString();
+    $a = Carbon::now()->toDateString();
+    $today = Carbon::now()->subDays(2)->toDateString();
 
     $dataSkrng = Reservasi::join('buku', 'reservasi.id_buku', '=', 'buku.id_buku')
     ->join('profil', 'reservasi.id_profil', '=', 'profil.id_profil')
     ->select('reservasi.*', 'buku.*', 'profil.*')
     ->where('reservasi.tanggal_dikembalikan', '>', $today)
     ->get();
+
+    
     foreach ($dataSkrng as $a) {
         if ($a->status_reservasi === "Masih Dipinjam") {
-           $message = 'Buku yang anda pinjam dengan judul '.$a->nama_buku.' segera kembalikan pada tanggal '.$a->tanggal_dikembalikan.' atau anda terkena denda sebesar Rp.5000. silahkan klik tautan ini jika anda ingin memperpanjang peminjaman buku anda : '.route("reservasi.perpanjang", $a->id_reservasi);
-                    
+            $message = 'Buku yang anda pinjam dengan judul '.$a->nama_buku.' segera kembalikan pada tanggal '.$a->tanggal_dikembalikan.' atau anda terkena denda sebesar Rp.5000. silahkan klik tautan ini jika anda ingin memperpanjang peminjaman buku anda : '.route("reservasi.perpanjang", $a->id_reservasi);
+            
             $response = Http::withHeaders([
-                    'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                'Authorization'=> env('APP_FONNTE'),
                 ])->post('https://api.fonnte.com/send',[
                     'target' =>'0'.$a->no_hp,
                     'message' => $message,
                     'countryCode' => '+62',
                 ]);
-        }
+            }
 
         if($a->status_reservasi === "Pengajuan Peminjaman"){
             $response = Http::withHeaders([
-                'Authorization'=> 'j@LzeHaXb4bhIctMhNqu',
+                'Authorization'=> env('APP_FONNTE'),
             ])->post('https://api.fonnte.com/send',[
                 'target' =>'081542355622',
                 'message' => 'Terdapat buku yang belum anda konfirmasi dengan judul '.$a->nama_buku.' segera Konfirmasi di dashboard admin',
@@ -114,6 +117,10 @@ Route::controller(LandingController::class)->group(function(){
     Route::get('detailskategori/{id}','detailskategori')->name('detail-kategori');
     Route::get('detailstats/{id}','detailstats')->name('detail-stats');
     Route::post('isi-tamu','tamucreate')->name('tamu-form');
+    Route::get('cari','cari')->name('cari');
+    Route::get('advanced','advanced')->name('advanced');
+    Route::get('caribuku','caribuku')->name('caribuku');
+    Route::get('advancedbuku','advancedbuku')->name('advancedbuku');
 });
 
 Route::controller(AuthController::class)->group(function (){
@@ -199,6 +206,7 @@ Route::middleware('auth','authAdmin')->group( function () {
         Route::get('logreservasi','logreservasi')->name('reservasi.riwayat');
         Route::get('perpanjangan/{id}','perpanjang')->name('reservasi.perpanjang');
         Route::post('ubahStats','ubahStats')->name('reservasi.ubah');
+        Route::post('/selesai','selesaiPinjam')->name('reservasi.selesai');
     });
 
     Route::controller(KegiatanController::class)->prefix('kegiatan')->group(function(){

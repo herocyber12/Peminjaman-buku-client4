@@ -11,6 +11,9 @@
 
     <title>Buat Akun | Perpustakaan Widaya Kusuma</title>
 
+    <link rel="stylesheet" href="{{asset('css/landing/font-awesome.min.css')}}" type="text/css">
+
+
     <!-- Custom fonts for this template-->
     <link href="{{asset('css/dashboard/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link
@@ -103,19 +106,15 @@
                                     <input type="text" name="username" class="form-control form-control-user" id="exampleInputEmail"
                                         placeholder="Username">
                                 </div>
-                                <div class="form-group row">
-                                    <div class="col-sm-12 mb-3 mb-sm-0">
-                                        <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Masukan Kata Sandi">
-                                    </div>
+                                <div class="input-group mb-3">
+                                    <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Masukan Kata Sandi">
+                                    <button type="button" class="input-group-text bg-transparent btn-inverse-white m-0"  onclick="togglepassword1()"><i class="fa fa-eye" id="iconnya1"></i></button>          
                                 </div>
                                 <button type="submit" name="submit" class="btn btn-primary btn-user btn-block">
                                     Buat Akun
                                 </button>
                             </form>
                             <hr>
-                            <div class="text-center">
-                                <a class="small" href="forgot-password.html">Lupa Kata Sandi?</a>
-                            </div>
                             <div class="text-center">
                                 <a class="small" href="{{route('login')}}">Sudah Punya? Masuk!</a>
                             </div>
@@ -138,11 +137,24 @@
     <!-- Custom scripts for all pages-->
     <script src="{{asset('js/dashboard/sb-admin-2.min.js')}}"></script>
     <script>
-$(document).ready(function () {
-  $('#a').toast('show');
-});
+        $(document).ready(function () {
+        $('#a').toast('show');
+        });
 
 
+    </script>
+    <script>
+        function togglepassword1(){
+            const passwordInput = document.getElementById('exampleInputPassword');
+            const classPassword = document.getElementById('iconnya1');
+            if(passwordInput.type === "password"){
+            passwordInput.type = "text";
+            classPassword.className = "fa fa-eye-slash";
+            } else {
+            passwordInput.type = "password";
+            classPassword.className = "fa fa-eye";
+            }
+        }
     </script>
 
 </body>
