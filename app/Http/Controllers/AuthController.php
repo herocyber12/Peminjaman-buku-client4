@@ -10,6 +10,7 @@ use Illuminate\Validation\ValidationException;
 use App\Models\Profil;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
@@ -64,19 +65,21 @@ class AuthController extends Controller
                 'nama' => 'required|string',
                 'alamat' => 'required',
                 'no_hp' => 'required|numeric',
-                'email' => 'required',
-                'username' => 'required',
+                'email' => ['required', 'email', Rule::unique('users', 'email')],
+                'username' => ['required',Rule::unique('users', 'username')],
                 'password' => 'required',
             ],[
                 'required' => 'Kolom Harus Diisi',
                 'nama.required' => 'Nama Harus Diisi',
                 'nama.string' => 'Nama Harus Berupa huruf',
-                'alamat.required' => 'Alamat Harus Diisi',
+                'alamat.required' => 'Alamat Harus Diisi', 
                 'no_hp.required' => 'Nomor HP Harus Diisi',
                 'no_hp.numeric' => 'Nomor HP Harus Diisi',
                 'email.required' => 'Email Harus Diisi',
                 'username.required' => 'Username Harus Diisi',
                 'password.required' => 'Password Harus Diisi',
+                'email.unique' => 'Email sudah terdaftar.',
+                'username.unique' => 'Username sudah ada',
             ]);
     
             if($validator->fails()){

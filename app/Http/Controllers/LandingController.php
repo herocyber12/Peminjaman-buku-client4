@@ -28,7 +28,7 @@ class LandingController extends Controller
             'tanggal' => date('Y-m-d')
         ]);
 
-        $data_buku = Buku::latest()->take(8)->get();
+        $data_buku = Buku::latest()->take(10)->get();
         $ulasanPerBuku = [];
 
         foreach ($data_buku as $buku) {

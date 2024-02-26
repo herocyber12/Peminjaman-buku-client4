@@ -663,9 +663,9 @@ ol {
 
 .product__item__pic {
 	height: 250px;
-	/* width: 200; */
+	width: 200;
 	position: relative;
-	/* border-radius: 5px; */
+	border-radius: 5px;
 }
 
 .product__item__pic .ep {

@@ -114,7 +114,7 @@
                                                     <ul>
                                                         <li>{{$a->id_kategori}}</li>
                                                     </ul>
-                                                    <h5>{{$a->nama_buku}}</h5>
+                                                    <h5 class="text-truncate">{{$a->nama_buku}}</h5>
                                                 </div>
                                             </div>    
                                         </div>
@@ -170,7 +170,7 @@
                                                     <ul>
                                                         <li>{{$a->id_kategori}}</li>
                                                     </ul>
-                                                    <h5>{{$a->nama_buku}}</h5>
+                                                    <h5 class="text-truncate">{{$a->nama_buku}}</h5>
                                                 </div>
                                             </div>    
                                         </div>

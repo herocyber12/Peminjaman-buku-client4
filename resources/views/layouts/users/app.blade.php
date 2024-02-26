@@ -39,6 +39,20 @@
     	font-weight: normal;
     	font-style: normal;
     }
+
+    @font-face {
+  font-family: "FontAwesome";
+  src: url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.eot?v=4.7.0");
+  src: url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.eot?#iefix&v=4.7.0")
+      format("embedded-opentype"),
+    url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.woff2?v=4.7.0") format("woff2"),
+    url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.woff?v=4.7.0") format("woff"),
+    url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.ttf?v=4.7.0") format("truetype"),
+    url("https://tunasndorenan.my.id/public//fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular")
+      format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
     	.image-container {
             display: flex;
             flex-direction: column;
